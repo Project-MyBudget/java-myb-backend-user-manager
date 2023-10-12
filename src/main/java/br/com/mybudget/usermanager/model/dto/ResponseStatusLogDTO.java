@@ -15,4 +15,5 @@ public class ResponseStatusLogDTO {
 
 	private int status;
 	private String message;
+	private Long id;
 }

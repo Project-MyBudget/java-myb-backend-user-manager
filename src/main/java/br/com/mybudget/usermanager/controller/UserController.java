@@ -33,10 +33,10 @@ public class UserController {
 		if (userId > 0) {
 			log.info("[INFO] Success in registering user");
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new ResponseStatusLogDTO(201, "O cliente foi registrado com sucesso!"));
+					.body(new ResponseStatusLogDTO(201, "O cliente foi registrado com sucesso!", userId));
 		}
 		log.error("[ERROR] Error in registering user");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(new ResponseStatusLogDTO(500, "Não foi possivel registrar o cliente"));
+				.body(new ResponseStatusLogDTO(500, "Não foi possivel registrar o cliente", null));
 	}
 }
