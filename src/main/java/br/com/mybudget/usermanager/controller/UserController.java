@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mybudget.usermanager.model.dto.ResponseStatusLogDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/mybudget")
 public class UserController {
@@ -30,12 +28,10 @@ public class UserController {
 	public ResponseEntity<ResponseStatusLogDTO> registerUser(@RequestBody UserDTO requestRegisterUser) {
 		Long userId = userService.registerUser(requestRegisterUser);
 
-		if (userId > 0) {
-			log.info("[INFO] Success in registering user");
+		if (userId != null && userId > 0) {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new ResponseStatusLogDTO(201, "O cliente foi registrado com sucesso!", userId));
 		}
-		log.error("[ERROR] Error in registering user");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(new ResponseStatusLogDTO(500, "Não foi possivel registrar o cliente", null));
 	}

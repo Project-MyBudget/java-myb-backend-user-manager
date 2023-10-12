@@ -19,18 +19,17 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Long registerUser(UserDTO requestRegisterUser) {
-		
-			UserEntity userEntity = convertToEntity(requestRegisterUser);
-			userEntity = userRepository.saveAndFlush(userEntity);
 
-			if (userEntity.getUserId() > 0) {
-				log.info("[INFO] User register Sucess");
-				return userEntity.getUserId();
-			}
+		UserEntity userEntity = convertToEntity(requestRegisterUser);
+		userEntity = userRepository.saveAndFlush(userEntity);
 
-			log.error("[ERROR] Error in register user");
-			return null;
-		
+		if (userEntity != null && userEntity.getUserId() > 0) {
+			log.info("[INFO] User register Sucess - [ID]: " + userEntity.getUserId());
+			return userEntity.getUserId();
+		}
+
+		log.error("[ERROR] Error in register user");
+		return null;
 	}
 	
 	private static UserEntity convertToEntity(UserDTO userDto) {
