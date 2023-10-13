@@ -27,10 +27,6 @@ public class UserFamilyEntity {
     @Column(name = "ID")
     private long familyId;
 
-    @OneToOne
-    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    private UserEntity user;
-
     @Column(name = "CHILDREN_NUMBER", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
     private int userChildrenNumber;
 
@@ -39,4 +35,8 @@ public class UserFamilyEntity {
 
     @Column(name = "FAMILY_INCOME", nullable = false, columnDefinition = "DOUBLE NOT NULL DEFAULT 0.0")
     private double userFamilyIncome;
+    
+    @OneToOne
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    private UserEntity user;
 }

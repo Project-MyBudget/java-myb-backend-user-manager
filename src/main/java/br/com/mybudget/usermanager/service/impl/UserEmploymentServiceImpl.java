@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserDTO;
-import br.com.mybudget.usermanager.model.dto.UserEmploymentDTO;
+import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEmploymentEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.impl.UserEmploymentRepository;
@@ -32,7 +32,7 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public UserRegisterResponseDTO registerUserEmployment(UserDTO requestRegisterUserEmployment, UserEntity userEntity) {
+	public UserRegisterResponseDTO registerUserEmployment(UserRequestDTO requestRegisterUserEmployment, UserEntity userEntity) {
 		try {
 			UserEmploymentEntity userEmploymentEntity = UserEmploymentEntity.builder().user(userEntity)
 					.userJobName(requestRegisterUserEmployment.getUserEmployment().getUserJobName())
@@ -44,7 +44,7 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 				log.info("[INFO] User Employment register Sucess - [ID USER EMPLOYMENT]: "
 						+ userEmploymentEntity.getEmploymentId());
 				return new UserRegisterResponseDTO(201, "Caracteristicas do emprego do usuario registrado com sucesso!",
-						userEmploymentEntity.getEmploymentId());
+						userEmploymentEntity);
 			}
 
 			log.error("[ERROR] Error in register user employment");
@@ -66,7 +66,7 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 	 * @return {@link UserRegisterResponseDTO}
 	 */
 	@Override
-	public ResponseEntity<UserRegisterResponseDTO> registerUserEmployment(UserEmploymentDTO requestRegisterUserEmployment,
+	public ResponseEntity<UserRegisterResponseDTO> registerUserEmployment(UserEmploymentRequestDTO requestRegisterUserEmployment,
 			UserEntity userEntity) {
 		try {
 			UserEmploymentEntity userEmploymentEntity = UserEmploymentEntity.builder().user(userEntity)
@@ -81,7 +81,7 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new UserRegisterResponseDTO(201,
 								"Caracteristicas do emprego do usuario registrado com sucesso!",
-								userEmploymentEntity.getEmploymentId()));
+								userEmploymentEntity));
 			}
 
 			log.error("[ERROR] Error in register user employment");

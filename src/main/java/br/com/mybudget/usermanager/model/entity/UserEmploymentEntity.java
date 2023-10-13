@@ -27,14 +27,14 @@ public class UserEmploymentEntity {
 	@Column(name = "ID")
 	private long employmentId;
 
-	@OneToOne
-	@JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-	private UserEntity user;
-
 	@Column(name = "JOB_NAME", nullable = false)
 	private String userJobName;
 
 	@Column(name = "SALARY", nullable = false)
 	private double userSalary;
+	
+	@OneToOne
+	@JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+	private UserEntity user;
 
 }

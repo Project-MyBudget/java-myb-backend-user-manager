@@ -15,5 +15,5 @@ public class UserRegisterResponseDTO {
 
 	private int status;
 	private String message;
-	private Long id;
+	private Object entity;
 }

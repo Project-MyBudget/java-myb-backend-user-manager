@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserDTO {
+public class UserRequestDTO {
 
 	private long userId;
 	private String userFirstName;
@@ -24,6 +24,6 @@ public class UserDTO {
 	private String userEmail;
 	private char userStatus;
 	private String userPassword;
-	private UserEmploymentDTO userEmployment;
-	private UserFamilyDTO userFamily;
+	private UserEmploymentRequestDTO userEmployment;
+	private UserFamilyRequestDTO userFamily;
 }

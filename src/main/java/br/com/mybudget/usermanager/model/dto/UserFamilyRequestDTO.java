@@ -12,12 +12,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserFamilyDTO {
+public class UserFamilyRequestDTO {
 
 	private long familyId;
-	private UserDTO user;
 	private int userChildrenNumber;
 	private UserMaritalStatusEnum userCivilStatus;
 	private double userFamilyIncome;
+	private UserRequestDTO user;
 	
 }

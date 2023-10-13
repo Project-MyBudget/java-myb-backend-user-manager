@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserDTO;
+import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.impl.UserRepository;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(UserDTO requestRegisterUser) {
+	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(UserRequestDTO requestRegisterUser) {
 		
 		List<UserRegisterResponseDTO> responses = new ArrayList<UserRegisterResponseDTO>();
 		
@@ -62,12 +62,12 @@ public class UserServiceImpl implements UserService{
 				}
 				
 				log.info("[INFO] User register Sucess - [ID]: " + userEntity.getUserId());
-				responses.add(new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!", userEntity.getUserId()));
+				responses.add(new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!",userEntity));
 				return ResponseEntity.status(HttpStatus.CREATED).body(responses);
 			}
 			
 			log.error("[ERROR] Error in register user");
-			responses.add(new UserRegisterResponseDTO(500, "Não foi possivel registrar o usuario", userEntity.getUserId()));
+			responses.add(new UserRegisterResponseDTO(500, "Não foi possivel registrar o usuario", null));
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responses);
 			
 		} catch (Exception ex) {
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService{
 	 * @param userDto
 	 * @return
 	 */
-	private static UserEntity convertToEntity(UserDTO userDto) {
+	private static UserEntity convertToEntity(UserRequestDTO userDto) {
 		return UserEntity.builder()
 				.userFirstName(userDto.getUserFirstName())
 				.userLastName(userDto.getUserLastName())

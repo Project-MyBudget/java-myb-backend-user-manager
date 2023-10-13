@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserDTO;
+import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.service.UserService;
 
@@ -31,7 +31,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping(value = "/user/register", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(@RequestBody UserDTO requestRegisterUser) {
+	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(@RequestBody UserRequestDTO requestRegisterUser) {
 		return userService.registerUser(requestRegisterUser);
 	}
 	

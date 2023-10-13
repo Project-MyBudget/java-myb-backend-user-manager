@@ -11,10 +11,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserEmploymentDTO {
+public class UserEmploymentRequestDTO {
 
 	private long employmentId;	
 	private double userSalary;
 	private String userJobName;
-	private UserDTO user;
+	private UserRequestDTO user;
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserEmploymentDTO;
+import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
 import br.com.mybudget.usermanager.service.UserService;
 
@@ -30,7 +30,7 @@ public class UserEmploymentController {
 	 * @return
 	 */
 	@PostMapping(value = "/employment/register/{userId}", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<UserRegisterResponseDTO> registerUserEmployment(@RequestBody UserEmploymentDTO requestRegisterUser, @PathVariable long userId) {
+	public ResponseEntity<UserRegisterResponseDTO> registerUserEmployment(@RequestBody UserEmploymentRequestDTO requestRegisterUser, @PathVariable long userId) {
 		return userEmploymentService.registerUserEmployment(requestRegisterUser, userService.findByIdUser(userId));
 	}
 }

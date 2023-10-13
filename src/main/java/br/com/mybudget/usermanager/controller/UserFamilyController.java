@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserFamilyDTO;
+import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
 
@@ -30,7 +30,7 @@ public class UserFamilyController {
 	 * @return
 	 */
 	@PostMapping(value = "/family/register/{userId}", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<UserRegisterResponseDTO> registerUserFamily(@RequestBody UserFamilyDTO requestRegisterUser, @PathVariable long userId) {
+	public ResponseEntity<UserRegisterResponseDTO> registerUserFamily(@RequestBody UserFamilyRequestDTO requestRegisterUser, @PathVariable long userId) {
 		return userFamilyService.registerUserFamily(requestRegisterUser, userService.findByIdUser(userId));
 	}
 }

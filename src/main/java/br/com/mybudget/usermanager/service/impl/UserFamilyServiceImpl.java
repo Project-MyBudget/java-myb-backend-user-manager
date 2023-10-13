@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserDTO;
-import br.com.mybudget.usermanager.model.dto.UserFamilyDTO;
+import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.model.entity.UserFamilyEntity;
 import br.com.mybudget.usermanager.repository.impl.UserFamilyRepository;
@@ -31,7 +31,7 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public UserRegisterResponseDTO registerUserFamily(UserDTO requestRegisterUserFamily, UserEntity userEntity) {
+	public UserRegisterResponseDTO registerUserFamily(UserRequestDTO requestRegisterUserFamily, UserEntity userEntity) {
 		try {
 			UserFamilyEntity userFamilyEntity = UserFamilyEntity.builder().user(userEntity)
 					.userChildrenNumber(requestRegisterUserFamily.getUserFamily().getUserChildrenNumber())
@@ -44,7 +44,7 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 			if (userFamilyEntity != null) {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
 				return new UserRegisterResponseDTO(201, "Caracteristicas da familia do usuario registrado com sucesso!",
-						userFamilyEntity.getFamilyId());
+						userFamilyEntity);
 			}
 
 			log.error("[ERROR] Error in register user family");
@@ -65,7 +65,7 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 	 * @return {@link UserRegisterResponseDTO}
 	 */
 	@Override
-	public ResponseEntity<UserRegisterResponseDTO> registerUserFamily(UserFamilyDTO requestRegisterUserFamily,
+	public ResponseEntity<UserRegisterResponseDTO> registerUserFamily(UserFamilyRequestDTO requestRegisterUserFamily,
 			UserEntity userEntity) {
 		try {
 			UserFamilyEntity userFamilyEntity = UserFamilyEntity.builder()
@@ -76,13 +76,13 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 					.build();
 
 			userFamilyEntity = userFamilyRepository.saveAndFlush(userFamilyEntity);
-
+			
 			if (userFamilyEntity != null) {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new UserRegisterResponseDTO(201,
 								"Caracteristicas da familia do usuario registrado com sucesso!",
-								userFamilyEntity.getFamilyId()));
+								userFamilyEntity));
 			}
 
 			log.error("[ERROR] Error in register user family");
