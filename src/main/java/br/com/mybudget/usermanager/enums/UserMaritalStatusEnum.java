@@ -2,23 +2,23 @@ package br.com.mybudget.usermanager.enums;
 
 public enum UserMaritalStatusEnum {
 
-	SOLTEIRO('S'),
-	CASADO('C'),
-	DIVORCIADO('D'),
-	VIUVO('V');
+	SINGLE('S'),
+	MARRIED('M'),
+	DIVORCED('D'),
+	WIDOWER('W');
 	
-	private char estadoCivil;
+	private char maritinalStatus;
 
-	private UserMaritalStatusEnum(char estadoCivil) {
-		this.estadoCivil = estadoCivil;
+	private UserMaritalStatusEnum(char maritinalStatus) {
+		this.maritinalStatus = maritinalStatus;
 	}
 
-	public char getEstadoCivil() {
-		return estadoCivil;
+	public char getMaritinalStatus() {
+		return maritinalStatus;
 	}
 
-	public void setEstadoCivil(char estadoCivil) {
-		this.estadoCivil = estadoCivil;
+	public void setMaritinalStatus(char maritinalStatus) {
+		this.maritinalStatus = maritinalStatus;
 	}
 
 }

@@ -18,11 +18,12 @@ public class UserDTO {
 	private long userId;
 	private String userFirstName;
 	private String userLastName;
-	private String userCpf;
 	private Date userDateOfBirth;
 	private String userGender;
 	private String userPhoneNumber;
 	private String userEmail;
 	private char userStatus;
 	private String userPassword;
+	private UserEmploymentDTO userEmployment;
+	private UserFamilyDTO userFamily;
 }

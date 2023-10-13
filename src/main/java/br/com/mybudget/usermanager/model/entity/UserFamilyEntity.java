@@ -9,17 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import br.com.mybudget.usermanager.enums.UserMaritalStatusEnum;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@Builder
 @ToString
 @Entity
 @Table(name = "TB_USER_FAMILY")
@@ -34,12 +31,12 @@ public class UserFamilyEntity {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     private UserEntity user;
 
-    @Column(name = "CHILDREN_NUMBER", nullable = false)
+    @Column(name = "CHILDREN_NUMBER", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
     private int userChildrenNumber;
 
-    @Column(name = "CIVIL_STATUS", nullable = false)
-    private UserMaritalStatusEnum userCivilStatus;
+    @Column(name = "CIVIL_STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL DEFAULT 'S'")
+    private char userCivilStatus;
 
-    @Column(name = "FAMILY_INCOME", nullable = false)
+    @Column(name = "FAMILY_INCOME", nullable = false, columnDefinition = "DOUBLE NOT NULL DEFAULT 0.0")
     private double userFamilyIncome;
 }
