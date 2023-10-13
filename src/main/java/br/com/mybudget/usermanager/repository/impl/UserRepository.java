@@ -7,5 +7,5 @@ import br.com.mybudget.usermanager.model.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
-
+	UserEntity findByUserEmail(String email);
 }
