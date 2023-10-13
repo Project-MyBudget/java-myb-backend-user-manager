@@ -1,1 +1,0 @@
-# java-myb-backend-user-manager
