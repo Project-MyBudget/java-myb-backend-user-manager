@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import br.com.mybudget.usermanager.model.dto.ResponseStatusLogDTO;
+import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserFamilyDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
@@ -27,11 +27,11 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 	 * 
 	 * returns the response if the user's family data was registered successfully
 	 * 
-	 * @return {@link ResponseStatusLogDTO}
+	 * @return {@link UserRegisterResponseDTO}
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public ResponseStatusLogDTO registerUserFamily(UserDTO requestRegisterUserFamily, UserEntity userEntity) {
+	public UserRegisterResponseDTO registerUserFamily(UserDTO requestRegisterUserFamily, UserEntity userEntity) {
 		try {
 			UserFamilyEntity userFamilyEntity = UserFamilyEntity.builder().user(userEntity)
 					.userChildrenNumber(requestRegisterUserFamily.getUserFamily().getUserChildrenNumber())
@@ -43,17 +43,17 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 
 			if (userFamilyEntity != null) {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
-				return new ResponseStatusLogDTO(201, "Caracteristicas da familia do usuario registrado com sucesso!",
+				return new UserRegisterResponseDTO(201, "Caracteristicas da familia do usuario registrado com sucesso!",
 						userFamilyEntity.getFamilyId());
 			}
 
 			log.error("[ERROR] Error in register user family");
-			return new ResponseStatusLogDTO(500, "Não foi possivel registrar as caracteristicas da familia do usuario",
+			return new UserRegisterResponseDTO(500, "Não foi possivel registrar as caracteristicas da familia do usuario",
 					null);
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user family - " + ex);
-			return new ResponseStatusLogDTO(500, "Não foi possivel registrar as caracteristicas da familia do usuario",
+			return new UserRegisterResponseDTO(500, "Não foi possivel registrar as caracteristicas da familia do usuario",
 					null);
 		}
 	}
@@ -62,10 +62,10 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 	 * 
 	 * returns the response if the user's family data was registered successfully
 	 * 
-	 * @return {@link ResponseStatusLogDTO}
+	 * @return {@link UserRegisterResponseDTO}
 	 */
 	@Override
-	public ResponseEntity<ResponseStatusLogDTO> registerUserFamily(UserFamilyDTO requestRegisterUserFamily,
+	public ResponseEntity<UserRegisterResponseDTO> registerUserFamily(UserFamilyDTO requestRegisterUserFamily,
 			UserEntity userEntity) {
 		try {
 			UserFamilyEntity userFamilyEntity = UserFamilyEntity.builder()
@@ -80,18 +80,18 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 			if (userFamilyEntity != null) {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
 				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(new ResponseStatusLogDTO(201,
+						.body(new UserRegisterResponseDTO(201,
 								"Caracteristicas da familia do usuario registrado com sucesso!",
 								userFamilyEntity.getFamilyId()));
 			}
 
 			log.error("[ERROR] Error in register user family");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseStatusLogDTO(500,
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UserRegisterResponseDTO(500,
 					"Não foi possivel registrar as caracteristicas da familia do usuario", null));
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user family - " + ex);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseStatusLogDTO(500,
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UserRegisterResponseDTO(500,
 					"Não foi possivel registrar as caracteristicas da familia do usuario", null));
 		}
 	}

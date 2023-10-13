@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import br.com.mybudget.usermanager.model.dto.ResponseStatusLogDTO;
+import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.impl.UserRepository;
@@ -43,9 +43,9 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public ResponseEntity<List<ResponseStatusLogDTO>> registerUser(UserDTO requestRegisterUser) {
+	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(UserDTO requestRegisterUser) {
 		
-		List<ResponseStatusLogDTO> responses = new ArrayList<ResponseStatusLogDTO>();
+		List<UserRegisterResponseDTO> responses = new ArrayList<UserRegisterResponseDTO>();
 		
 		try {
 			UserEntity userEntity = convertToEntity(requestRegisterUser);
@@ -62,17 +62,17 @@ public class UserServiceImpl implements UserService{
 				}
 				
 				log.info("[INFO] User register Sucess - [ID]: " + userEntity.getUserId());
-				responses.add(new ResponseStatusLogDTO(201, "Usuario registrado com sucesso!", userEntity.getUserId()));
+				responses.add(new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!", userEntity.getUserId()));
 				return ResponseEntity.status(HttpStatus.CREATED).body(responses);
 			}
 			
 			log.error("[ERROR] Error in register user");
-			responses.add(new ResponseStatusLogDTO(500, "Não foi possivel registrar o usuario", userEntity.getUserId()));
+			responses.add(new UserRegisterResponseDTO(500, "Não foi possivel registrar o usuario", userEntity.getUserId()));
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responses);
 			
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user - " + ex);
-			responses.add(new ResponseStatusLogDTO(500, "Não foi possivel registrar o usuario", null));
+			responses.add(new UserRegisterResponseDTO(500, "Não foi possivel registrar o usuario", null));
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responses);
 		}
 	}
