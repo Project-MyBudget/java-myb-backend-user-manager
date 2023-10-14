@@ -1,7 +1,5 @@
 package br.com.mybudget.usermanager.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +29,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping(value = "/user/register", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<List<UserRegisterResponseDTO>> registerUser(@RequestBody UserRequestDTO requestRegisterUser) {
+	public ResponseEntity<UserRegisterResponseDTO> registerUser(@RequestBody UserRequestDTO requestRegisterUser) {
 		return userService.registerUser(requestRegisterUser);
 	}
 	
