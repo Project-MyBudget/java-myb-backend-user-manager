@@ -1,4 +1,4 @@
-package br.com.mybudget.usermanager.repository.impl;
+package br.com.mybudget.usermanager.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -16,5 +16,5 @@ public class UserEmploymentRequestDTO {
 	private long employmentId;	
 	private double userSalary;
 	private String userJobName;
-	private UserRequestDTO user;
+	private UserDTO user;
 }

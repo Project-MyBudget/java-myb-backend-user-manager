@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.model.entity.UserFamilyEntity;
-import br.com.mybudget.usermanager.repository.impl.UserFamilyRepository;
+import br.com.mybudget.usermanager.repository.UserFamilyRepository;
 import br.com.mybudget.usermanager.service.UserFamilyService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,33 +29,33 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 	 * 
 	 * @return {@link UserRegisterResponseDTO}
 	 */
-	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public UserRegisterResponseDTO registerUserFamily(UserRequestDTO requestRegisterUserFamily, UserEntity userEntity) {
+	@Transactional(rollbackOn = Exception.class)
+	public UserRegisterResponseDTO registerUserFamily(UserDTO requestRegisterUserFamily, UserEntity userEntity) {
 		try {
 			UserFamilyEntity userFamilyEntity = UserFamilyEntity.builder().user(userEntity)
-					.userChildrenNumber(requestRegisterUserFamily.getUserFamily().getUserChildrenNumber())
+					.userChildrenNumber(requestRegisterUserFamily.getFamily().getUserChildrenNumber())
 					.userCivilStatus(
-							requestRegisterUserFamily.getUserFamily().getUserCivilStatus().getMaritinalStatus())
-					.userFamilyIncome(requestRegisterUserFamily.getUserFamily().getUserFamilyIncome()).build();
+							requestRegisterUserFamily.getFamily().getUserCivilStatus().getMaritinalStatus())
+					.userFamilyIncome(requestRegisterUserFamily.getFamily().getUserFamilyIncome()).build();
 
 			userFamilyEntity = userFamilyRepository.saveAndFlush(userFamilyEntity);
 
 			if (userFamilyEntity != null) {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
 				return new UserRegisterResponseDTO(201, "Caracteristicas da familia do usuario registrado com sucesso!",
-						userEntity.getUserId(), userFamilyEntity.getFamilyId(), null);
+						userEntity.getId(), userFamilyEntity.getFamilyId(), null);
 			}
 
 			log.error("[ERROR] Error in register user family");
 			return new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getUserId(), null,
+					"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getId(), null,
 					null);
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user family - " + ex);
 			return new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getUserId(), null,
+					"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getId(), null,
 					null);
 		}
 	}
@@ -81,22 +81,22 @@ public class UserFamilyServiceImpl implements UserFamilyService {
 				log.info("[INFO] User Family register Sucess - [ID USER FAMILY]: " + userFamilyEntity.getFamilyId());
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new UserRegisterResponseDTO(201,
-								"Caracteristicas da familia do usuario registrado com sucesso!", userEntity.getUserId(),
+								"Caracteristicas da familia do usuario registrado com sucesso!", userEntity.getId(),
 								userFamilyEntity.getFamilyId(), null));
 			}
 
 			log.error("[ERROR] Error in register user family");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new UserRegisterResponseDTO(500,
-							"Não foi possivel registrar as caracteristicas da familia do usuario",
-							userEntity.getUserId(), null, null));
+							"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getId(),
+							null, null));
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user family - " + ex);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new UserRegisterResponseDTO(500,
-							"Não foi possivel registrar as caracteristicas da familia do usuario",
-							userEntity.getUserId(), null, null));
+							"Não foi possivel registrar as caracteristicas da familia do usuario", userEntity.getId(),
+							null, null));
 		}
 	}
 }

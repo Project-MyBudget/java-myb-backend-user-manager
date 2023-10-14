@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEmploymentEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
-import br.com.mybudget.usermanager.repository.impl.UserEmploymentRepository;
+import br.com.mybudget.usermanager.repository.UserEmploymentRepository;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,33 +30,32 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 	 * 
 	 * @return {@link UserRegisterResponseDTO}
 	 */
-	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public UserRegisterResponseDTO registerUserEmployment(UserRequestDTO requestRegisterUserEmployment,
+	@Transactional(rollbackOn = Exception.class)
+	public UserRegisterResponseDTO registerUserEmployment(UserDTO requestRegisterUserEmployment,
 			UserEntity userEntity) {
 		try {
 			UserEmploymentEntity userEmploymentEntity = UserEmploymentEntity.builder().user(userEntity)
-					.userJobName(requestRegisterUserEmployment.getUserEmployment().getUserJobName())
-					.userSalary(requestRegisterUserEmployment.getUserEmployment().getUserSalary()).build();
+					.userJobName(requestRegisterUserEmployment.getEmployment().getUserJobName())
+					.userSalary(requestRegisterUserEmployment.getEmployment().getUserSalary()).build();
 
 			userEmploymentEntity = userEmploymentRepository.saveAndFlush(userEmploymentEntity);
 
 			if (userEmploymentEntity != null) {
-				log.info("[INFO] User Employment register Sucess - [ID USER EMPLOYMENT]: "
-						+ userEmploymentEntity.getEmploymentId());
+				log.info("[INFO] User Employment register Sucess - {} : ", userEmploymentEntity.getEmploymentId());
 				return new UserRegisterResponseDTO(201, "Caracteristicas do emprego do usuario registrado com sucesso!",
-						userEntity.getUserId(), null, userEmploymentEntity.getEmploymentId());
+						userEntity.getId(), null, userEmploymentEntity.getEmploymentId());
 			}
 
 			log.error("[ERROR] Error in register user employment");
 			return new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getUserId(), null,
+					"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getId(), null,
 					null);
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user employment - " + ex);
 			return new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getUserId(), null,
+					"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getId(), null,
 					null);
 		}
 	}
@@ -83,22 +82,22 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 						+ userEmploymentEntity.getEmploymentId());
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new UserRegisterResponseDTO(201,
-								"Caracteristicas do emprego do usuario registrado com sucesso!", userEntity.getUserId(),
+								"Caracteristicas do emprego do usuario registrado com sucesso!", userEntity.getId(),
 								null, userEmploymentEntity.getEmploymentId()));
 			}
 
 			log.error("[ERROR] Error in register user employment");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new UserRegisterResponseDTO(500,
-							"Não foi possivel registrar as caracteristicas do emprego do usuario",
-							userEntity.getUserId(), null, null));
+							"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getId(),
+							null, null));
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user employment - " + ex);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new UserRegisterResponseDTO(500,
-							"Não foi possivel registrar as caracteristicas do emprego do usuario",
-							userEntity.getUserId(), null, null));
+							"Não foi possivel registrar as caracteristicas do emprego do usuario", userEntity.getId(),
+							null, null));
 		}
 	}
 }

@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
-import br.com.mybudget.usermanager.model.dto.UserRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
-import br.com.mybudget.usermanager.repository.impl.UserRepository;
+import br.com.mybudget.usermanager.repository.UserRepository;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
 import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @return retun list the response request register data user
 	 */
-	@Transactional(rollbackOn = Exception.class)
 	@Override
-	public ResponseEntity<UserRegisterResponseDTO> registerUser(UserRequestDTO requestRegisterUser) {
+	@Transactional(rollbackOn = Exception.class)
+	public ResponseEntity<UserRegisterResponseDTO> registerUser(UserDTO requestRegisterUser) {
 		try {
 			Long userFamilyId = null;
 			Long userEmploymentId = null;
@@ -51,26 +51,26 @@ public class UserServiceImpl implements UserService {
 
 			userEntity = userRepository.saveAndFlush(userEntity);
 
-			if (userEntity != null && userEntity.getUserId() > 0) {
-				if (requestRegisterUser.getUserFamily() != null) {
+			if (userEntity != null && userEntity.getId() > 0) {
+				if (requestRegisterUser.getEmployment() != null) {
 					response = userFamilyService.registerUserFamily(requestRegisterUser, userEntity);
 					userFamilyId = response.getUserFamilyId();
 				}
 
-				if (requestRegisterUser.getUserEmployment() != null) {
+				if (requestRegisterUser.getEmployment() != null) {
 					response = userEmploymentService.registerUserEmployment(requestRegisterUser, userEntity);
 					userEmploymentId = response.getUserEmploymentId();
 				}
 
-				log.info("[INFO] User register Sucess - [ID]: " + userEntity.getUserId());
-				response = new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!", userEntity.getUserId(),
+				log.info("[INFO] User register Sucess - [ID]: " + userEntity.getId());
+				response = new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!", userEntity.getId(),
 						userFamilyId, userEmploymentId);
 				return ResponseEntity.status(HttpStatus.CREATED).body(response);
 			}
 
 			log.error("[ERROR] Error in register user");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar o usuario", userEntity.getUserId(), userFamilyId, userEmploymentId));
+					"Não foi possivel registrar o usuario", userEntity.getId(), userFamilyId, userEmploymentId));
 
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user - " + ex);
@@ -109,10 +109,10 @@ public class UserServiceImpl implements UserService {
 	 * @param userDto
 	 * @return
 	 */
-	private static UserEntity convertToEntity(UserRequestDTO userDto) {
-		return UserEntity.builder().userFirstName(userDto.getUserFirstName()).userLastName(userDto.getUserLastName())
-				.userDateOfBirth(userDto.getUserDateOfBirth()).userGender(userDto.getUserGender())
-				.userPhoneNumber(userDto.getUserPhoneNumber()).userEmail(userDto.getUserEmail())
-				.userStatus(userDto.getUserStatus()).userPassword(userDto.getUserPassword()).build();
+	private static UserEntity convertToEntity(UserDTO userDto) {
+		return UserEntity.builder().firstName(userDto.getFirstName()).lastName(userDto.getLastName())
+				.dateOfBirth(userDto.getDateOfBirth()).gender(userDto.getGender())
+				.phoneNumber(userDto.getPhoneNumber()).email(userDto.getEmail())
+				.status(userDto.getStatus()).password(userDto.getPassword()).build();
 	}
 }

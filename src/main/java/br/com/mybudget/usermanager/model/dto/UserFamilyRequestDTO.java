@@ -18,6 +18,6 @@ public class UserFamilyRequestDTO {
 	private int userChildrenNumber;
 	private UserMaritalStatusEnum userCivilStatus;
 	private double userFamilyIncome;
-	private UserRequestDTO user;
+	private UserDTO user;
 	
 }

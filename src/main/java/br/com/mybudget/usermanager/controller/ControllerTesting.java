@@ -21,7 +21,7 @@ public class ControllerTesting {
 	private AuthenticateUserService service;
 
 	@PostMapping(value = "/user/login", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<UserAuthenticateResponseDTO> registerUser(@RequestBody UserAuthenticateRequestDTO request) {
+	public ResponseEntity<Object> registerUser(@RequestBody UserAuthenticateRequestDTO request) {
 		return service.authenticateUser(request);
 	}
 

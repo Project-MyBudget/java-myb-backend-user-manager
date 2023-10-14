@@ -27,36 +27,36 @@ public class UserEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-	private long userId;
+	private long id;
 
     @Column(name = "FIRST_NAME", nullable = false)
-    private String userFirstName;
+    private String firstName;
 
     @Column(name = "LAST_NAME", nullable = false)
-    private String userLastName;
+    private String lastName;
 
     @Column(name = "DATEOFBIRTH", nullable = false)
-    private Date userDateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "GENRE", nullable = false)
-    private String userGender;
+    private String gender;
 
     @Column(name = "PHONE", nullable = false)
-    private String userPhoneNumber;
+    private String phoneNumber;
 
     @Column(name = "EMAIL", nullable = false)
-    private String userEmail;
+    private String email;
 
     @Column(name = "STATUS", nullable = false)
-    private char userStatus;
+    private char status;
 
     @Column(name = "PASSWORD", nullable = false)
-    private String userPassword;
+    private String password;
     
     @Column(name = "CREATE_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable = false)
-    private Date userCreateAt;
+    private Date createAt;
 
     @Column(name = "UPDATE_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable=false, updatable = false)
-    private Date userUpdateAt;
-
+    private Date updateAt;
+    
 }
