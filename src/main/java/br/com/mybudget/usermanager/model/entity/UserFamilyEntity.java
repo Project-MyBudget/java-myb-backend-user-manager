@@ -25,16 +25,16 @@ public class UserFamilyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private long familyId;
+    private long id;
 
     @Column(name = "CHILDREN_NUMBER", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
-    private int userChildrenNumber;
+    private int childrenNumber;
 
     @Column(name = "CIVIL_STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL DEFAULT 'S'")
-    private char userCivilStatus;
+    private char civilStatus;
 
     @Column(name = "FAMILY_INCOME", nullable = false, columnDefinition = "DOUBLE NOT NULL DEFAULT 0.0")
-    private double userFamilyIncome;
+    private double familyIncome;
     
     @OneToOne
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")

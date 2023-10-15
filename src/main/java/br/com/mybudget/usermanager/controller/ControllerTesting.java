@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.UserAuthenticateRequestDTO;
-import br.com.mybudget.usermanager.model.dto.UserAuthenticateResponseDTO;
 import br.com.mybudget.usermanager.service.AuthenticateUserService;
 
 // Controller for testing new functionalities (Exclude after integration modules)

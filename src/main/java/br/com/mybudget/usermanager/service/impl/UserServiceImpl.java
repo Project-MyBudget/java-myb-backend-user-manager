@@ -1,5 +1,6 @@
 package br.com.mybudget.usermanager.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -9,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import br.com.mybudget.usermanager.model.dto.UserRegisterResponseDTO;
+import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
+import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
+import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.UserRepository;
+import br.com.mybudget.usermanager.service.CryptoDataService;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
 import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
@@ -30,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserFamilyService userFamilyService;
+	
+	@Autowired
+	private CryptoDataService cryptoDataService;
 
 	/**
 	 * 
@@ -40,42 +47,50 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional(rollbackOn = Exception.class)
-	public ResponseEntity<UserRegisterResponseDTO> registerUser(UserDTO requestRegisterUser) {
+	public ResponseEntity<ApiResponseDTO> addUser(UserDTO requestRegisterUser) {
 		try {
-			Long userFamilyId = null;
-			Long userEmploymentId = null;
-
-			UserRegisterResponseDTO response = new UserRegisterResponseDTO();
-
 			UserEntity userEntity = convertToEntity(requestRegisterUser);
+			
+			log.info("[REGISTER USER] Encrypting new password.");
+			List<String> encrypteds = cryptoDataService.encryptData(userEntity.getPassword());
+			userEntity.setPassword(encrypteds.get(0));
 
 			userEntity = userRepository.saveAndFlush(userEntity);
 
 			if (userEntity != null && userEntity.getId() > 0) {
 				if (requestRegisterUser.getEmployment() != null) {
-					response = userFamilyService.registerUserFamily(requestRegisterUser, userEntity);
-					userFamilyId = response.getUserFamilyId();
+
+					UserEmploymentRequestDTO userEmploymentRequestDTO = UserEmploymentRequestDTO.builder()
+							.user(requestRegisterUser)
+							.jobName(requestRegisterUser.getEmployment().getJobName())
+							.salary(requestRegisterUser.getEmployment().getSalary()).build();
+
+					userEmploymentService.addEmployment(userEmploymentRequestDTO, userEntity);
 				}
 
-				if (requestRegisterUser.getEmployment() != null) {
-					response = userEmploymentService.registerUserEmployment(requestRegisterUser, userEntity);
-					userEmploymentId = response.getUserEmploymentId();
+				if (requestRegisterUser.getFamily() != null) {
+
+					UserFamilyRequestDTO userFamilyRequestDTO = UserFamilyRequestDTO.builder()
+							.childrenNumber(requestRegisterUser.getFamily().getChildrenNumber())
+							.civilStatus(requestRegisterUser.getFamily().getCivilStatus())
+							.familyIncome(requestRegisterUser.getFamily().getFamilyIncome())
+							.build();
+
+					userFamilyService.addFamily(userFamilyRequestDTO, userEntity);
 				}
 
-				log.info("[INFO] User register Sucess - [ID]: " + userEntity.getId());
-				response = new UserRegisterResponseDTO(201, "Usuario registrado com sucesso!", userEntity.getId(),
-						userFamilyId, userEmploymentId);
-				return ResponseEntity.status(HttpStatus.CREATED).body(response);
+				log.info("[INFO] User register Sucess - [ID]: {}", userEntity.getId());
+				return ResponseEntity.ok(new ApiResponseDTO(HttpStatus.CREATED.name(), "Usuario registrado com sucesso!"));
 			}
 
 			log.error("[ERROR] Error in register user");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UserRegisterResponseDTO(500,
-					"Não foi possivel registrar o usuario", userEntity.getId(), userFamilyId, userEmploymentId));
+			return ResponseEntity.internalServerError().body(new ApiResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.name(),
+					"Não foi possivel registrar o usuario"));
 
 		} catch (Exception ex) {
-			log.error("[ERROR] Error in register user - " + ex);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new UserRegisterResponseDTO(500, "Não foi possivel registrar o usuario", null, null, null));
+			log.error("[ERROR] Error in register user - {}", ex);
+			return ResponseEntity.badRequest()
+					.body(new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar o usuario"));
 		}
 	}
 
@@ -91,16 +106,16 @@ public class UserServiceImpl implements UserService {
 			Optional<UserEntity> userEntity = userRepository.findById(id);
 
 			if (userEntity != null) {
-				log.info("[INFO] Sucess find user by id [ID]: " + id);
+				log.info("[INFO] Sucess find user by id [ID]: {}", id);
 				return userEntity.get();
 			}
 
-			log.error("[ERROR] Error in find user by [ID]: " + id);
-			return null;
+			log.error("[ERROR] Error in find user by [ID]: {}", id);
+
 		} catch (Exception ex) {
-			log.error("[ERROR] Error in find user by [ID]: " + id + " : [ERROR] " + ex);
-			return null;
+			log.error("[ERROR] Error in find user by [ID]: {}", id, " : [ERROR] {}", ex);
 		}
+		return null;
 	}
 
 	/**
@@ -110,9 +125,15 @@ public class UserServiceImpl implements UserService {
 	 * @return
 	 */
 	private static UserEntity convertToEntity(UserDTO userDto) {
-		return UserEntity.builder().firstName(userDto.getFirstName()).lastName(userDto.getLastName())
-				.dateOfBirth(userDto.getDateOfBirth()).gender(userDto.getGender())
-				.phoneNumber(userDto.getPhoneNumber()).email(userDto.getEmail())
-				.status(userDto.getStatus()).password(userDto.getPassword()).build();
+		return UserEntity.builder()
+				.firstName(userDto.getFirstName())
+				.lastName(userDto.getLastName())
+				.dateOfBirth(userDto.getDateOfBirth())
+				.gender(userDto.getGender())
+				.phoneNumber(userDto.getPhoneNumber())
+				.email(userDto.getEmail())
+				.status(userDto.getStatus())
+				.password(userDto.getPassword())
+				.build();
 	}
 }

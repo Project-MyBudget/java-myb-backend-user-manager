@@ -25,13 +25,13 @@ public class UserEmploymentEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private long employmentId;
+	private long id;
 
 	@Column(name = "JOB_NAME", nullable = false)
-	private String userJobName;
+	private String jobName;
 
 	@Column(name = "SALARY", nullable = false)
-	private double userSalary;
+	private double salary;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_USER", referencedColumnName = "ID")

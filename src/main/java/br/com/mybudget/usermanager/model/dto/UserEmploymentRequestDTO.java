@@ -1,20 +1,18 @@
 package br.com.mybudget.usermanager.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@Builder
 @ToString
 public class UserEmploymentRequestDTO {
 
-	private long employmentId;	
-	private double userSalary;
-	private String userJobName;
+	private long id;	
+	private double salary;
+	private String jobName;
 	private UserDTO user;
 }

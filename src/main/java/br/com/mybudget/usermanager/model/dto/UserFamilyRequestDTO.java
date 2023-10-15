@@ -2,22 +2,20 @@ package br.com.mybudget.usermanager.model.dto;
 
 import br.com.mybudget.usermanager.enums.UserMaritalStatusEnum;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@Builder
 @ToString
 public class UserFamilyRequestDTO {
 
 	private long familyId;
-	private int userChildrenNumber;
-	private UserMaritalStatusEnum userCivilStatus;
-	private double userFamilyIncome;
+	private int childrenNumber;
+	private UserMaritalStatusEnum civilStatus;
+	private double familyIncome;
 	private UserDTO user;
 	
 }
