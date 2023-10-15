@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
+import br.com.mybudget.usermanager.model.dto.UserAuthenticateRequestDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
 import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
+import br.com.mybudget.usermanager.service.AuthenticateUserService;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
 import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
@@ -31,6 +33,9 @@ public class UserController {
 	
 	@Autowired
 	private UserEmploymentService userEmploymentService;
+	
+	@Autowired
+	private AuthenticateUserService authenticateService;
 	
 	
 	/**
@@ -95,7 +100,12 @@ public class UserController {
 		if (response != null) {
 			return ResponseEntity.ok(response);
 		}
+
 		return ResponseEntity.notFound().build();
-		//TODO: Implement Optional<UserEntity>.
+	}
+	
+	@PostMapping(value = "/user/authenticate", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Object> authenticate(@RequestBody UserAuthenticateRequestDTO request) {
+		return authenticateService.authenticateUser(request);
 	}
 }

@@ -29,7 +29,7 @@ public class AuthenticateUserServiceImpl implements AuthenticateUserService {
 		try {
 			log.info("[AUTH USER] Received request to authenticate user {} ", request.getEmail());
 			UserEntity userEntity = repository.findByEmail(request.getEmail());
-
+ 
 			if (userEntity == null) {
 				log.info("[ERROR] Email not found in database.");
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
