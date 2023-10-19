@@ -33,13 +33,14 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 					.user(userEntity)
 					.jobName(requestRegisterUserEmployment.getJobName())
 					.salary(requestRegisterUserEmployment.getSalary())
+					.workStartDate(requestRegisterUserEmployment.getWorkStartDate())
 					.build();
 
 			log.info("[REGISTER EMPLOYMENT] Register Employment.");
 			userEmploymentEntity = userEmploymentRepository.saveAndFlush(userEmploymentEntity);
 
 			if (userEmploymentEntity != null) {
-				log.info("[INFO] User Employment register Sucess - [ID EMPLOYMENT]: {}", userEmploymentEntity.getId());
+				log.info("[INFO] User Employment register Sucess - [ID EMPLOYMENT]: {}", userEmploymentEntity.getIdEmployment());
 				return new ApiResponseDTO(HttpStatus.CREATED.name(),
 						"Caracteristicas do emprego do usuario registrado com sucesso!");
 			}

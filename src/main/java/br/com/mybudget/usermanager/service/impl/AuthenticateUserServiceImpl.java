@@ -47,7 +47,7 @@ public class AuthenticateUserServiceImpl implements AuthenticateUserService {
 			log.info("[AUTH USER] User success authenticated.");
 
 			UserAuthenticateResponseDTO response = UserAuthenticateResponseDTO.builder().email(userEntity.getEmail())
-					.id(userEntity.getId()).name(userEntity.getFirstName()).status(userEntity.getStatus()).build();
+					.id(userEntity.getIdUser()).name(userEntity.getFirstName()).status(userEntity.getStatus()).build();
 			return ResponseEntity.accepted().body(response);
 		} catch (Exception e) {
 			log.error("[ERROR] Generic error: {} ", e.getMessage());

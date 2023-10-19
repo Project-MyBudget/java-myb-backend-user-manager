@@ -14,11 +14,9 @@ import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserAuthenticateRequestDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
-import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.service.AuthenticateUserService;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
-import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
 
 @RestController
@@ -27,9 +25,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private UserFamilyService userFamilyService;
 	
 	@Autowired
 	private UserEmploymentService userEmploymentService;
@@ -68,23 +63,6 @@ public class UserController {
 				new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar os dados do emprego"));
 	}
 	
-	/**
-	 * Register data user family
-	 * 
-	 * @param requestRegisterUser
-	 * @return
-	 */
-	@PostMapping(value = "/family/register/{userId}", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<ApiResponseDTO> addFamily(@RequestBody UserFamilyRequestDTO requestRegisterUser,
-			@PathVariable long userId) {
-		ApiResponseDTO response = userFamilyService.addFamily(requestRegisterUser,	userService.findByIdUser(userId));
-
-		if (response != null) {
-			return ResponseEntity.ok(response);
-		}
-		return ResponseEntity.badRequest().body(
-				new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar os dados da familia"));
-	}
 	
 	/**
 	 * Tries to retrive a user from the database's application.

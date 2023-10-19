@@ -1,3 +1,4 @@
+
 package br.com.mybudget.usermanager.model.entity;
 
 import java.sql.Date;
@@ -26,32 +27,38 @@ public class UserEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-	private long id;
+    @Column(name = "ID_USER")
+	private long idUser;
 
-    @Column(name = "FIRST_NAME", nullable = false)
+    @Column(name = "FIRST_NAME", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
     private String firstName;
 
-    @Column(name = "LAST_NAME", nullable = false)
+    @Column(name = "LAST_NAME", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
     private String lastName;
 
-    @Column(name = "DATEOFBIRTH", nullable = false)
+    @Column(name = "DATE_OF_BIRTH", nullable = false, columnDefinition = "DATE NOT NULL")
     private Date dateOfBirth;
 
-    @Column(name = "GENRE", nullable = false)
+    @Column(name = "GENRE", nullable = false, columnDefinition = "VARCHAR(10) NOT NULL")
     private String gender;
 
-    @Column(name = "PHONE", nullable = false)
+    @Column(name = "CHILDREN_NUMBER", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
+    private int childrenNumber;
+    
+    @Column(name = "PHONE", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
     private String phoneNumber;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, columnDefinition = "VARCHAR(60) NOT NULL")
     private String email;
 
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = "STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL")
     private char status;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "PASSWORD", nullable = false, columnDefinition = "VARCHAR(255) NOT NULL")
     private String password;
+    
+    @Column(name = "CIVIL_STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL DEFAULT 'S'")
+    private char civilStatus;
     
     @Column(name = "CREATE_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable = false)
     private Date createAt;

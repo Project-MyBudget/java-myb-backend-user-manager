@@ -1,5 +1,7 @@
 package br.com.mybudget.usermanager.model.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,17 +26,20 @@ public class UserEmploymentEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private long id;
+	@Column(name = "ID_EMPLOYMENT")
+	private long idEmployment;
 
-	@Column(name = "JOB_NAME", nullable = false)
+	@Column(name = "JOB_NAME", nullable = false, columnDefinition = "VARCHAR(60) NOT NULL")
 	private String jobName;
 
-	@Column(name = "SALARY", nullable = false)
+	@Column(name = "SALARY", nullable = false, columnDefinition = "DOUBLE NOT NULL")
 	private double salary;
 	
+	@Column(name = "WORK_START_DATE", nullable = false, columnDefinition = "DATE NOT NULL")
+	private Date workStartDate;
+	
 	@OneToOne
-	@JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+	@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
 	private UserEntity user;
 
 }

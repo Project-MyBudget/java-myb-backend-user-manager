@@ -13,12 +13,10 @@ import org.springframework.stereotype.Component;
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
-import br.com.mybudget.usermanager.model.dto.UserFamilyRequestDTO;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.UserRepository;
 import br.com.mybudget.usermanager.service.CryptoDataService;
 import br.com.mybudget.usermanager.service.UserEmploymentService;
-import br.com.mybudget.usermanager.service.UserFamilyService;
 import br.com.mybudget.usermanager.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,9 +29,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserEmploymentService userEmploymentService;
-
-	@Autowired
-	private UserFamilyService userFamilyService;
 	
 	@Autowired
 	private CryptoDataService cryptoDataService;
@@ -57,29 +52,20 @@ public class UserServiceImpl implements UserService {
 
 			userEntity = userRepository.saveAndFlush(userEntity);
 
-			if (userEntity != null && userEntity.getId() > 0) {
+			if (userEntity != null && userEntity.getIdUser() > 0) {
 				if (requestRegisterUser.getEmployment() != null) {
 
 					UserEmploymentRequestDTO userEmploymentRequestDTO = UserEmploymentRequestDTO.builder()
 							.user(requestRegisterUser)
 							.jobName(requestRegisterUser.getEmployment().getJobName())
-							.salary(requestRegisterUser.getEmployment().getSalary()).build();
+							.salary(requestRegisterUser.getEmployment().getSalary())
+							.workStartDate(requestRegisterUser.getEmployment().getWorkStartDate())
+							.build();
 
 					userEmploymentService.addEmployment(userEmploymentRequestDTO, userEntity);
 				}
 
-				if (requestRegisterUser.getFamily() != null) {
-
-					UserFamilyRequestDTO userFamilyRequestDTO = UserFamilyRequestDTO.builder()
-							.childrenNumber(requestRegisterUser.getFamily().getChildrenNumber())
-							.civilStatus(requestRegisterUser.getFamily().getCivilStatus())
-							.familyIncome(requestRegisterUser.getFamily().getFamilyIncome())
-							.build();
-
-					userFamilyService.addFamily(userFamilyRequestDTO, userEntity);
-				}
-
-				log.info("[INFO] User register Sucess - [ID]: {}", userEntity.getId());
+				log.info("[INFO] User register Sucess - [ID]: {}", userEntity.getIdUser());
 				return ResponseEntity.ok(new ApiResponseDTO(HttpStatus.CREATED.name(), "Usuario registrado com sucesso!"));
 			}
 
@@ -130,10 +116,12 @@ public class UserServiceImpl implements UserService {
 				.lastName(userDto.getLastName())
 				.dateOfBirth(userDto.getDateOfBirth())
 				.gender(userDto.getGender())
+				.childrenNumber(userDto.getChildrenNumber())
 				.phoneNumber(userDto.getPhoneNumber())
 				.email(userDto.getEmail())
 				.status(userDto.getStatus())
 				.password(userDto.getPassword())
+				.civilStatus(userDto.getCivilStatus().getMaritinalStatus())
 				.build();
 	}
 }
