@@ -8,8 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -26,29 +26,27 @@ import lombok.ToString;
 public class ExpensesEntity {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private long id;
-	
-	
+
 	@Column(name = "ID_BUDGET", nullable = false, columnDefinition = "INT NOT NULL")
 	private long idBudget;
-	
+
 	@Column(name = "VALUE", nullable = false, columnDefinition = "DOUBLE NOT NULL")
 	private double value;
-	
+
 	@Column(name = "DATE_CREATED", nullable = false, columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP")
 	private Date dateCreated;
-	
+
 	@Column(name = "LAST_UPDATED", nullable = false, columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private Date lastUpdated;
-	
-	
+
 	@ManyToOne
 	private BudgetEntity budget;
-	
-	@ManyToMany
+
+	@OneToOne
 	@JoinColumn(name = "ID_EXPENSES_TYPES", referencedColumnName = "ID")
 	private ExpensesTypeEntity expenseType;
-	
+
 }

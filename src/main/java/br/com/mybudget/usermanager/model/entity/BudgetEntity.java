@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -36,7 +36,7 @@ public class BudgetEntity {
 	@Column(name = "SPENDING_LIMIT_ECONOMY", nullable = true, columnDefinition = "DOUBLE")
 	private double spendingLimitEconomy;
 	
-	@OneToMany
-	@JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+	@OneToOne 
+	@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
 	private UserEntity user;
 }
