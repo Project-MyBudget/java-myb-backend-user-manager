@@ -94,6 +94,8 @@ public class UserServiceImpl implements UserService {
 			if (userEntity != null) {
 				log.info("[INFO] Sucess find user by id [ID]: {}", id);
 				return userEntity.get();
+			} else {
+				
 			}
 
 			log.error("[ERROR] Error in find user by [ID]: {}", id);

@@ -30,40 +30,40 @@ public class UserEntity {
     @Column(name = "ID_USER")
 	private long idUser;
 
-    @Column(name = "FIRST_NAME", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
-    @Column(name = "LAST_NAME", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
 
-    @Column(name = "DATE_OF_BIRTH", nullable = false, columnDefinition = "DATE NOT NULL")
+    @Column(name = "DATE_OF_BIRTH", nullable = false)
     private Date dateOfBirth;
 
-    @Column(name = "GENRE", nullable = false, columnDefinition = "VARCHAR(10) NOT NULL")
+    @Column(name = "GENRE", nullable = false)
     private String gender;
 
-    @Column(name = "CHILDREN_NUMBER", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
+    @Column(name = "CHILDREN_NUMBER", nullable = false)
     private int childrenNumber;
     
-    @Column(name = "PHONE", nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "PHONE", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "EMAIL", nullable = false, columnDefinition = "VARCHAR(60) NOT NULL")
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL")
+    @Column(name = "STATUS", nullable = false)
     private char status;
 
-    @Column(name = "PASSWORD", nullable = false, columnDefinition = "VARCHAR(255) NOT NULL")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
     
-    @Column(name = "CIVIL_STATUS", nullable = false, columnDefinition = "CHAR(1) NOT NULL DEFAULT 'S'")
+    @Column(name = "STATUS_CIVIL", nullable = false)
     private char civilStatus;
     
-    @Column(name = "CREATE_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable = false)
+    @Column(name = "CREATE_AT", nullable = false, insertable=false, updatable = false)
     private Date createAt;
 
-    @Column(name = "UPDATE_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable=false, updatable = false)
+    @Column(name = "UPDATE_AT", nullable = false, insertable=false, updatable = false)
     private Date updateAt;
     
 }

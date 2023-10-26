@@ -21,7 +21,7 @@ import lombok.ToString;
 @Builder
 @ToString
 @Entity
-@Table(name = "TB_USER_EMPLOYMENT")
+@Table(name = "TB_EMPLOYMENTS")
 public class UserEmploymentEntity {
 
 	@Id
@@ -29,7 +29,7 @@ public class UserEmploymentEntity {
 	@Column(name = "ID_EMPLOYMENT")
 	private long idEmployment;
 
-	@Column(name = "JOB_NAME", nullable = false, columnDefinition = "VARCHAR(60) NOT NULL")
+	@Column(name = "JOBNAME", nullable = false, columnDefinition = "VARCHAR(60) NOT NULL")
 	private String jobName;
 
 	@Column(name = "SALARY", nullable = false, columnDefinition = "DOUBLE NOT NULL")
