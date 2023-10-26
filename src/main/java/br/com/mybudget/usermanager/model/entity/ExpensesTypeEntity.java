@@ -22,12 +22,12 @@ public class ExpensesTypeEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ID_EXP_TYPE")
 	private long id;
 	
-	@Column(name = "DESCRIPTION", nullable = false, columnDefinition = "VARCHAR(160) NOT NULL")
+	@Column(name = "DESCRIPTION", nullable = true)
 	private String description;
 	
-	@Column(name = "EXPENSE_TYPE", nullable = true, columnDefinition = "CHAR(1) NOT NULL")
-	private char expenseType;
+	@Column(name = "TYPE", nullable = false)
+	private String type;
 }

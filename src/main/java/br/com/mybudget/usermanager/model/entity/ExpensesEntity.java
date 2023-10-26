@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,26 +28,21 @@ public class ExpensesEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
+	@Column(name = "ID_EXPENSES")
 	private long id;
 
-	@Column(name = "ID_BUDGET", nullable = false, columnDefinition = "INT NOT NULL")
-	private long idBudget;
-
+	@Column(name = "DATE_REFERENCE", nullable = false, columnDefinition = "DATETIME NOT NULL")
+	private String dateReference;
+	
 	@Column(name = "VALUE", nullable = false, columnDefinition = "DOUBLE NOT NULL")
 	private double value;
-
-	@Column(name = "DATE_CREATED", nullable = false, columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP")
-	private Date dateCreated;
-
-	@Column(name = "LAST_UPDATED", nullable = false, columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	private Date lastUpdated;
-
-	@ManyToOne
-	private BudgetEntity budget;
-
-	@OneToOne
-	@JoinColumn(name = "ID_EXPENSES_TYPES", referencedColumnName = "ID")
+	
+	// @OneToOne
+	@Column(name = "ID_USER", nullable = false, columnDefinition = "INT NOT NULL")
+	private UserEntity userEntity;
+	
+	@OneToMany 
+	@JoinColumn(name = "ID_EXP_TYPE", nullable = false)
 	private ExpensesTypeEntity expenseType;
 
 }

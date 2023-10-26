@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -24,7 +25,7 @@ public class BudgetEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ID_BUDGET")
 	private long id;
 	
 	@Column(name = "BUDGET", nullable = false, columnDefinition = "DOUBLE NOT NULL DEFAULT 0.0")
@@ -36,7 +37,7 @@ public class BudgetEntity {
 	@Column(name = "SPENDING_LIMIT_ECONOMY", nullable = true, columnDefinition = "DOUBLE")
 	private double spendingLimitEconomy;
 	
-	@OneToOne 
+	@OneToOne // Change
 	@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
 	private UserEntity user;
 }
