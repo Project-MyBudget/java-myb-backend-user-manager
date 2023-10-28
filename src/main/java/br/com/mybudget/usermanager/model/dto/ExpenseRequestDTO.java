@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class ExpenseRequestDTO {
 	
-	private int id;
+	private Long id;
 	private double value;
 	private String dateReference;
 }

@@ -17,6 +17,6 @@ import lombok.ToString;
 @ToString
 public class ExpenseEnvelopeDTO {
 	
-	private int idUser;
+	private Long idUser;
 	private List<ExpenseRequestDTO> expenses;
 }
