@@ -10,14 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @ToString
 @Entity
 @Table(name = "TB_BUDGET")
@@ -28,13 +27,13 @@ public class BudgetEntity {
     @Column(name = "ID_BUDGET")
 	private long id;
 	
-	@Column(name = "BUDGET", nullable = false, columnDefinition = "DOUBLE NOT NULL DEFAULT 0.0")
+	@Column(name = "BUDGET", nullable = false)
 	private double budget;
 	
-	@Column(name = "VALUE_SAVED", nullable = true, columnDefinition = "DOUBLE")
+	@Column(name = "VALUE_SAVED", nullable = true)
 	private double valueSaved;
 	
-	@Column(name = "SPENDING_LIMIT_ECONOMY", nullable = true, columnDefinition = "DOUBLE")
+	@Column(name = "SPENDING_LIMIT_ECONOMY", nullable = true)
 	private double spendingLimitEconomy;
 	
 	@OneToOne // Change

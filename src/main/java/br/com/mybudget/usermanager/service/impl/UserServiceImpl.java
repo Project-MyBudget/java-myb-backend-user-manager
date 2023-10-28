@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import br.com.mybudget.usermanager.repository.BudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
+import br.com.mybudget.usermanager.model.entity.BudgetEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.UserRepository;
 import br.com.mybudget.usermanager.service.CryptoDataService;
@@ -33,19 +35,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private CryptoDataService cryptoDataService;
 
-	/**
-	 * 
-	 * This method will take the general registration that the user entered and will
-	 * check if he filled in his family and employment details
-	 * 
-	 * @return retun list the response request register data user
-	 */
+	@Autowired
+	private BudgetRepository budgetRepository;
+
 	@Override
 	@Transactional(rollbackOn = Exception.class)
 	public ResponseEntity<ApiResponseDTO> addUser(UserDTO requestRegisterUser) {
 		try {
 			UserEntity userEntity = convertToEntity(requestRegisterUser);
-			
+
 			log.info("[REGISTER USER] Encrypting new password.");
 			List<String> encrypteds = cryptoDataService.encryptData(userEntity.getPassword());
 			userEntity.setPassword(encrypteds.get(0));
@@ -53,16 +51,25 @@ public class UserServiceImpl implements UserService {
 			userEntity = userRepository.saveAndFlush(userEntity);
 
 			if (userEntity != null && userEntity.getIdUser() > 0) {
+				
 				if (requestRegisterUser.getEmployment() != null) {
-
-					UserEmploymentRequestDTO userEmploymentRequestDTO = UserEmploymentRequestDTO.builder()
+					UserEmploymentRequestDTO employmentDTO = UserEmploymentRequestDTO.builder()
 							.user(requestRegisterUser)
 							.jobName(requestRegisterUser.getEmployment().getJobName())
 							.salary(requestRegisterUser.getEmployment().getSalary())
 							.workStartDate(requestRegisterUser.getEmployment().getWorkStartDate())
 							.build();
 
-					userEmploymentService.addEmployment(userEmploymentRequestDTO, userEntity);
+					BudgetEntity budgetEntity = BudgetEntity
+							.builder()
+							.budget(employmentDTO.getSalary())
+							.user(userEntity)
+							.valueSaved(0)
+							.spendingLimitEconomy(0)
+							.build();
+
+					budgetRepository.saveAndFlush(budgetEntity);
+					userEmploymentService.addEmployment(employmentDTO, userEntity);
 				}
 
 				log.info("[INFO] User register Sucess - [ID]: {}", userEntity.getIdUser());
@@ -80,38 +87,23 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	/**
-	 * 
-	 * Find user by id
-	 * 
-	 * @return {@link UserEntity}
-	 */
 	@Override
 	public UserEntity findByIdUser(long id) {
 		try {
 			Optional<UserEntity> userEntity = userRepository.findById(id);
 
-			if (userEntity != null) {
+			if (userEntity.isPresent()) {
 				log.info("[INFO] Sucess find user by id [ID]: {}", id);
 				return userEntity.get();
-			} else {
-				
 			}
 
 			log.error("[ERROR] Error in find user by [ID]: {}", id);
-
 		} catch (Exception ex) {
-			log.error("[ERROR] Error in find user by [ID]: {}", id, " : [ERROR] {}", ex);
+			log.error("[ERROR] Error in find user by [ID]: {} : [ERROR] {}", id, ex.getMessage());
 		}
 		return null;
 	}
 
-	/**
-	 * Convert UserDTO in User Entity
-	 * 
-	 * @param userDto
-	 * @return
-	 */
 	private static UserEntity convertToEntity(UserDTO userDto) {
 		return UserEntity.builder()
 				.firstName(userDto.getFirstName())
@@ -123,7 +115,7 @@ public class UserServiceImpl implements UserService {
 				.email(userDto.getEmail())
 				.status(userDto.getStatus())
 				.password(userDto.getPassword())
-				.civilStatus(userDto.getCivilStatus().getMaritinalStatus())
+				.civilStatus(userDto.getCivilStatus().getMaritalStatus())
 				.build();
 	}
 }

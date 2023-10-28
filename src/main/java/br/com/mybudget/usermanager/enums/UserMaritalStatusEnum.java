@@ -7,18 +7,17 @@ public enum UserMaritalStatusEnum {
 	DIVORCED('D'),
 	WIDOWER('W');
 	
-	private char maritinalStatus;
+	private char maritalStatus;
 
-	private UserMaritalStatusEnum(char maritinalStatus) {
-		this.maritinalStatus = maritinalStatus;
+	private UserMaritalStatusEnum(char maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
 
-	public char getMaritinalStatus() {
-		return maritinalStatus;
+	public char getMaritalStatus() {
+		return maritalStatus;
 	}
 
-	public void setMaritinalStatus(char maritinalStatus) {
-		this.maritinalStatus = maritinalStatus;
+	public void setMaritinalStatus(char maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
-
 }

@@ -8,10 +8,11 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class BudgetRequestDTO {
-
-	private int idUser;
+	private long idUser;
+	private long idBudget;
 	private double budget;
 	private double valueSaved;
+	private double salary;
 	private double spendingLimitEconomy;
 	
 }

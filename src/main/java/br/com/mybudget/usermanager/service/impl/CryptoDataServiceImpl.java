@@ -3,6 +3,7 @@ package br.com.mybudget.usermanager.service.impl;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -30,17 +31,13 @@ public class CryptoDataServiceImpl implements CryptoDataService {
 		Cipher cipher = cipherService.getCipher(CipherEnum.ENCRYPT.toString());
 		List<String> dataEncrypteds = new ArrayList<>();
 
-		for (int i = 0; i < objects.length; i++) {
+		for (Object object : objects) {
 			try {
-				byte[] data = String.valueOf(objects[i]).getBytes("UTF-8");
+				byte[] data = String.valueOf(object).getBytes(StandardCharsets.UTF_8);
 				String cipherResponse = Base64.getEncoder().encodeToString(cipher.doFinal(data));
 				dataEncrypteds.add(cipherResponse);
-			} catch (IllegalBlockSizeException e) {
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
 				log.error("[ERROR] Error to encrypt data: {} ", e.getMessage());
-			} catch (BadPaddingException e) {
-				log.error("[ERROR] Error to encrypt data: {} ", e.getMessage());
-			} catch (UnsupportedEncodingException e) {
-				log.error("[ERROR] Unsupported data to encoding {} ", e.getMessage());
 			}
 		}
 
@@ -52,16 +49,14 @@ public class CryptoDataServiceImpl implements CryptoDataService {
 		Cipher cipher = cipherService.getCipher(CipherEnum.DECRYPT.toString());
 		List<String> deciphereddata = new ArrayList<>();
 
-		for (int i = 0; i < objects.length; i++) {
+		for (Object object : objects) {
 			try {
-				String encryptedData = String.valueOf(objects[i].toString());
+				String encryptedData = String.valueOf(object.toString());
 				byte[] encoded = Base64.getDecoder().decode(encryptedData);
 				byte[] cipherResponse = cipher.doFinal(encoded);
 				String decryptedResponseToString = new String(cipherResponse);
 				deciphereddata.add(decryptedResponseToString);
-			} catch (IllegalBlockSizeException e) {
-				log.error("[ERROR] Error to encrypt data: {} ", e.getMessage());
-			} catch (BadPaddingException e) {
+			} catch (IllegalBlockSizeException | BadPaddingException e) {
 				log.error("[ERROR] Error to encrypt data: {} ", e.getMessage());
 			}
 		}
