@@ -23,68 +23,59 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class ExpenseServiceImpl implements ExpenseService {
 
-	@Autowired
-	private ExpenseRepository expenseRepository;
+    @Autowired
+    private ExpenseRepository expenseRepository;
 
-	@Override
-	public ResponseEntity<ApiResponseDTO> saveOrUpdateExpense(ExpenseEnvelopeDTO expenseEnvelopeDTO) {
+    @Override
+    public ResponseEntity<ApiResponseDTO> saveOrUpdateExpense(ExpenseEnvelopeDTO expenseEnvelopeDTO) {
 
-		Long idUser = expenseEnvelopeDTO.getIdUser();
+        Long idUser = expenseEnvelopeDTO.getIdUser();
 
-		for (ExpenseRequestDTO expenseRequestDTO : expenseEnvelopeDTO.getExpenses()) {
-			Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseRequestDTO.getId());
+        for (ExpenseRequestDTO expenseRequestDTO : expenseEnvelopeDTO.getExpenses()) {
+            Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseRequestDTO.getId());
 
-			ExpensesEntity expense = ExpensesEntity.builder().dateReference(expenseRequestDTO.getDateReference())
-					.value(expenseRequestDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
-					.expenseType(ExpensesTypeEntity.builder().id(expenseRequestDTO.getId()).build()).build();
-			if (idExpense != null) {
-				expense.setId(idExpense);
-			}
-			expenseRepository.saveAndFlush(expense);
+            ExpensesEntity expense = ExpensesEntity.builder().dateReference(expenseRequestDTO.getDateReference())
+                    .value(expenseRequestDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
+                    .expenseType(ExpensesTypeEntity.builder().id(expenseRequestDTO.getId()).build()).build();
 
-			log.info("[SAVE EXPENSE] SAVING A NEW EXPENSE. ID_USER = " + idUser);
-		}
-		return ResponseEntity.ok(new ApiResponseDTO("200", "Despesas atualizadas com sucesso!"));
-	}
+            if (idExpense != null) {
+                expense.setId(idExpense);
+            }
 
-	@Override
-	public ExpenseEnvelopeDTO findExpenseById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            expenseRepository.saveAndFlush(expense);
+            log.info("[SAVE EXPENSE] SAVING A NEW EXPENSE. ID_USER: {}  ", idUser);
+        }
 
-	@Override
-	public ResponseEntity<UserExpensesEnvelopeResponseDTO> findAllExpenseByIdUser(long idUser) {
-		
-		List<ExpensesEntity> userExpensesEntities = expenseRepository.findAllExpenseByIdUser(idUser);
-		List<FullExpenseDTO> userExpensesDTOs = new ArrayList<>();
-		
-		for (ExpensesEntity expenseEntity : userExpensesEntities) {
-			userExpensesDTOs.add(FullExpenseDTO
-									.builder()
-										.idExpenseType(expenseEntity.getExpenseType().getId())
-										.descriptionExpenseType(expenseEntity.getExpenseType().getDescription())
-										.expenseType(expenseEntity.getExpenseType().getType())
-										.expenseRequestDTO(ExpenseRequestDTO
-																.builder()
-																	.id(expenseEntity.getId())
-																	.value(expenseEntity.getValue())
-																	.dateReference(expenseEntity.getDateReference())
-																	.build()
-										).build()
-			);
-		}
-		
-		System.out.println("Teste");
-		UserExpensesEnvelopeResponseDTO response = UserExpensesEnvelopeResponseDTO.builder().idUser(idUser).expenses(userExpensesDTOs).build();
-		
-		if (userExpensesEntities.size() == 0) {
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.ok(response);
-				
-	}
-	
-	
+        return ResponseEntity.ok(new ApiResponseDTO("200", "Despesas atualizadas com sucesso!"));
+    }
 
+    @Override
+    public ResponseEntity<UserExpensesEnvelopeResponseDTO> findAllExpenseByIdUser(long idUser) {
+        log.info("[EXPENSES] Getting expenses to user id {} ", idUser);
+        List<ExpensesEntity> expensesEntities = expenseRepository.findAllExpenseByIdUser(idUser);
+
+        if (expensesEntities.size() == 0) {
+            log.info("[EXPENSES] No founded expenses to user: {} ", idUser);
+            return ResponseEntity.noContent().build();
+        }
+
+        double totalExpenses = 0;
+        List<FullExpenseDTO> expenses = new ArrayList<>();
+
+        for (ExpensesEntity expense : expensesEntities) {
+            expenses.add(FullExpenseDTO
+                    .builder()
+                    .idExpenseType(expense.getExpenseType().getId())
+                    .descriptionExpenseType(expense.getExpenseType().getDescription())
+                    .expenseType(expense.getExpenseType().getType())
+                    .dateReference(expense.getDateReference())
+                    .build()
+            );
+
+            totalExpenses += expense.getValue();
+        }
+
+        log.info("[EXPENSES] Expenses founded to user: {} ", expenses.toString());
+        return ResponseEntity.ok(new UserExpensesEnvelopeResponseDTO(totalExpenses, expenses));
+    }
 }

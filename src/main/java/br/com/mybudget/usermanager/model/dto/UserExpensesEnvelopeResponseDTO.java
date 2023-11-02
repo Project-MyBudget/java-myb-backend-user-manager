@@ -16,8 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserExpensesEnvelopeResponseDTO {
-	
-	private long idUser;
+	private double totalExpenses;
 	private List<FullExpenseDTO> expenses;
 
 }

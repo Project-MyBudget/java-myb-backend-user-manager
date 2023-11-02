@@ -1,5 +1,6 @@
 package br.com.mybudget.usermanager.service.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -76,7 +77,7 @@ public class CipherServiceImpl implements CipherService {
 	private SecretKey getKey() {
 		MessageDigest sha = null;
 		try {
-			currentKey = cipherKey.getBytes("UTF-8");
+			currentKey = cipherKey.getBytes(StandardCharsets.UTF_8);
 			sha = MessageDigest.getInstance("SHA-1");
 			currentKey = sha.digest(currentKey);
 			currentKey = Arrays.copyOf(currentKey, 16);
