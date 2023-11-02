@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 			userEntity = userRepository.saveAndFlush(userEntity);
 
-			if (userEntity != null && userEntity.getIdUser() > 0) {
+			if (userEntity.getIdUser() > 0) {
 				
 				if (requestRegisterUser.getEmployment() != null) {
 					UserEmploymentRequestDTO employmentDTO = UserEmploymentRequestDTO.builder()

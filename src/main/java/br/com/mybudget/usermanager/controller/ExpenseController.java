@@ -29,9 +29,6 @@ public class ExpenseController {
 	
 	@GetMapping(value = "/expenses/{idUser}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<UserExpensesEnvelopeResponseDTO> getAllExpensesByUserId(@PathVariable Long idUser) {
-		
-		expenseService.findAllExpenseByIdUser(idUser);
-		
 		return expenseService.findAllExpenseByIdUser(idUser);
 	}
 }

@@ -16,3 +16,6 @@ spring:
 cipher:
   key: ${CIPHER_KEY}
   type: ${CIPHER_TYPE_INSTANCE}
+
+server:
+  port: 8080
