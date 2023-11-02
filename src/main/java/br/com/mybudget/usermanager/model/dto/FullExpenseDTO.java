@@ -15,9 +15,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ExpenseRequestDTO {
+public class FullExpenseDTO {
 	
-	private Long id;
-	private double value;
-	private String dateReference;
+	private ExpenseRequestDTO expenseRequestDTO;
+	
+	private Long idExpenseType;
+	private String descriptionExpenseType;
+	private String expenseType;
+	
 }

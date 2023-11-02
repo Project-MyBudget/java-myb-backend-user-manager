@@ -1,12 +1,13 @@
 package br.com.mybudget.usermanager.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Data
 @Builder
@@ -14,10 +15,9 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class ExpenseRequestDTO {
+public class UserExpensesEnvelopeResponseDTO {
 	
-	private Long id;
-	private double value;
-	private String dateReference;
+	private long idUser;
+	private List<FullExpenseDTO> expenses;
+
 }

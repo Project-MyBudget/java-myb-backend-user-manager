@@ -1,9 +1,9 @@
 package br.com.mybudget.usermanager.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.ExpenseEnvelopeDTO;
+import br.com.mybudget.usermanager.model.dto.UserExpensesEnvelopeResponseDTO;
 import br.com.mybudget.usermanager.service.ExpenseService;
 
 @RestController
@@ -23,7 +24,14 @@ public class ExpenseController {
 	@PostMapping(value = "/expenses/register", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> registerOrUpdateExpense(@RequestBody ExpenseEnvelopeDTO expenseEnvelopeDTO) {
 		
-		
 		return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
+	}
+	
+	@GetMapping(value = "/expenses/{idUser}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<UserExpensesEnvelopeResponseDTO> getAllExpensesByUserId(@PathVariable Long idUser) {
+		
+		expenseService.findAllExpenseByIdUser(idUser);
+		
+		return expenseService.findAllExpenseByIdUser(idUser);
 	}
 }

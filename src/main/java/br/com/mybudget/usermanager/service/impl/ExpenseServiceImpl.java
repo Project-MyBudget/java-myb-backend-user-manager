@@ -1,5 +1,8 @@
 package br.com.mybudget.usermanager.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -7,6 +10,8 @@ import org.springframework.stereotype.Component;
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
 import br.com.mybudget.usermanager.model.dto.ExpenseEnvelopeDTO;
 import br.com.mybudget.usermanager.model.dto.ExpenseRequestDTO;
+import br.com.mybudget.usermanager.model.dto.FullExpenseDTO;
+import br.com.mybudget.usermanager.model.dto.UserExpensesEnvelopeResponseDTO;
 import br.com.mybudget.usermanager.model.entity.ExpensesEntity;
 import br.com.mybudget.usermanager.model.entity.ExpensesTypeEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
@@ -47,5 +52,39 @@ public class ExpenseServiceImpl implements ExpenseService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ResponseEntity<UserExpensesEnvelopeResponseDTO> findAllExpenseByIdUser(long idUser) {
+		
+		List<ExpensesEntity> userExpensesEntities = expenseRepository.findAllExpenseByIdUser(idUser);
+		List<FullExpenseDTO> userExpensesDTOs = new ArrayList<>();
+		
+		for (ExpensesEntity expenseEntity : userExpensesEntities) {
+			userExpensesDTOs.add(FullExpenseDTO
+									.builder()
+										.idExpenseType(expenseEntity.getExpenseType().getId())
+										.descriptionExpenseType(expenseEntity.getExpenseType().getDescription())
+										.expenseType(expenseEntity.getExpenseType().getType())
+										.expenseRequestDTO(ExpenseRequestDTO
+																.builder()
+																	.id(expenseEntity.getId())
+																	.value(expenseEntity.getValue())
+																	.dateReference(expenseEntity.getDateReference())
+																	.build()
+										).build()
+			);
+		}
+		
+		System.out.println("Teste");
+		UserExpensesEnvelopeResponseDTO response = UserExpensesEnvelopeResponseDTO.builder().idUser(idUser).expenses(userExpensesDTOs).build();
+		
+		if (userExpensesEntities.size() == 0) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(response);
+				
+	}
+	
+	
 
 }
