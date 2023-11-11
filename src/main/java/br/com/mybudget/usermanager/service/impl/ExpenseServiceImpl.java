@@ -66,9 +66,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             expenses.add(FullExpenseDTO
                     .builder()
                     .idExpenseType(expense.getExpenseType().getId())
-                    .descriptionExpenseType(expense.getExpenseType().getDescription())
+                    .expenseDescription(expense.getExpenseType().getDescription())
                     .expenseType(expense.getExpenseType().getType())
                     .dateReference(expense.getDateReference())
+                    .value(expense.getValue())
+                    .idExpense(expense.getId())
                     .build()
             );
 

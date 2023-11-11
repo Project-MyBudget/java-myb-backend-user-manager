@@ -27,7 +27,7 @@ public class ExpenseController {
 		return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
 	}
 	
-	@GetMapping(value = "/expenses/{idUser}", consumes = "application/json", produces = "application/json")
+	@GetMapping(value = "/expenses/{idUser}", produces = "application/json")
 	public ResponseEntity<UserExpensesEnvelopeResponseDTO> getAllExpensesByUserId(@PathVariable Long idUser) {
 		return expenseService.findAllExpenseByIdUser(idUser);
 	}
