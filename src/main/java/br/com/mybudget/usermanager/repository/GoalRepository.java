@@ -1,0 +1,14 @@
+package br.com.mybudget.usermanager.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import br.com.mybudget.usermanager.model.entity.GoalEntity;
+
+public interface GoalRepository extends JpaRepository<GoalEntity, Long>{
+
+	@Query(value = "SELECT * FROM TB_GOALS u WHERE u.ID_USER = ?1", nativeQuery = true)
+	List<GoalEntity> findAllGoalsById(Long idUser);
+}
