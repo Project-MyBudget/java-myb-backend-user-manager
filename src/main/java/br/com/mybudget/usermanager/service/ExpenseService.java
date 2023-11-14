@@ -1,5 +1,6 @@
 package br.com.mybudget.usermanager.service;
 
+import br.com.mybudget.usermanager.model.dto.ExpensesTypeEnvelopeDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import br.com.mybudget.usermanager.model.dto.UserExpensesEnvelopeResponseDTO;
 
 @Service
 public interface ExpenseService {
-	
 	ResponseEntity<ApiResponseDTO> saveOrUpdateExpense(ExpenseEnvelopeDTO expenseEnvelopeDTO);
 	ResponseEntity<UserExpensesEnvelopeResponseDTO> findAllExpenseByIdUser(long idUser);
+	ExpensesTypeEnvelopeDTO getExpenses();
 }

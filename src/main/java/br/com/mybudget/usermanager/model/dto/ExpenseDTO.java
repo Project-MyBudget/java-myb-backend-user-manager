@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ExpenseRequestDTO {
+public class ExpenseDTO {
 	
 	private Long id;
 	private double value;

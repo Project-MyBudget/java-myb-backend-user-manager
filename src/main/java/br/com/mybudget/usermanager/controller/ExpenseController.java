@@ -1,5 +1,6 @@
 package br.com.mybudget.usermanager.controller;
 
+import br.com.mybudget.usermanager.model.dto.ExpensesTypeEnvelopeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,5 +31,16 @@ public class ExpenseController {
 	@GetMapping(value = "/expenses/{idUser}", produces = "application/json")
 	public ResponseEntity<UserExpensesEnvelopeResponseDTO> getAllExpensesByUserId(@PathVariable Long idUser) {
 		return expenseService.findAllExpenseByIdUser(idUser);
+	}
+
+	@GetMapping(value = "/expenses")
+	public ResponseEntity<ExpensesTypeEnvelopeDTO> getExpenses() {
+		ExpensesTypeEnvelopeDTO response = expenseService.getExpenses();
+
+		if (response == null) {
+			return ResponseEntity.noContent().build();
+		}
+
+		return ResponseEntity.ok(response);
 	}
 }

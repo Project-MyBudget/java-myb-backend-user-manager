@@ -3,15 +3,12 @@ package br.com.mybudget.usermanager.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.mybudget.usermanager.model.dto.*;
+import br.com.mybudget.usermanager.repository.ExpenseTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
-import br.com.mybudget.usermanager.model.dto.ExpenseEnvelopeDTO;
-import br.com.mybudget.usermanager.model.dto.ExpenseRequestDTO;
-import br.com.mybudget.usermanager.model.dto.FullExpenseDTO;
-import br.com.mybudget.usermanager.model.dto.UserExpensesEnvelopeResponseDTO;
 import br.com.mybudget.usermanager.model.entity.ExpensesEntity;
 import br.com.mybudget.usermanager.model.entity.ExpensesTypeEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
@@ -26,17 +23,20 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Autowired
     private ExpenseRepository expenseRepository;
 
+    @Autowired
+    private ExpenseTypeRepository expenseTypeRepository;
+
     @Override
     public ResponseEntity<ApiResponseDTO> saveOrUpdateExpense(ExpenseEnvelopeDTO expenseEnvelopeDTO) {
 
         Long idUser = expenseEnvelopeDTO.getIdUser();
 
-        for (ExpenseRequestDTO expenseRequestDTO : expenseEnvelopeDTO.getExpenses()) {
-            Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseRequestDTO.getId());
+        for (ExpenseDTO expenseDTO : expenseEnvelopeDTO.getExpenses()) {
+            Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseDTO.getId());
 
-            ExpensesEntity expense = ExpensesEntity.builder().dateReference(expenseRequestDTO.getDateReference())
-                    .value(expenseRequestDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
-                    .expenseType(ExpensesTypeEntity.builder().id(expenseRequestDTO.getId()).build()).build();
+            ExpensesEntity expense = ExpensesEntity.builder().dateReference(expenseDTO.getDateReference())
+                    .value(expenseDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
+                    .expenseType(ExpensesTypeEntity.builder().id(expenseDTO.getId()).build()).build();
 
             if (idExpense != null) {
                 expense.setId(idExpense);
@@ -79,5 +79,34 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         log.info("[EXPENSES] Expenses founded to user: {} ", expenses.toString());
         return ResponseEntity.ok(new UserExpensesEnvelopeResponseDTO(totalExpenses, expenses));
+    }
+
+    @Override
+    public ExpensesTypeEnvelopeDTO getExpenses() {
+        try {
+            log.info("[FIND ALL EXPENSES] Finding all expenses types");
+            List<ExpensesTypeEntity> expensesTypesEntities = expenseTypeRepository.findAll();
+            if (!expensesTypesEntities.isEmpty()) {
+                List<ExpenseTypeResponseDTO> response = new ArrayList<>();
+                expensesTypesEntities.forEach(expenseType -> {
+                    response.add(
+                            ExpenseTypeResponseDTO.builder()
+                                    .id(expenseType.getId())
+                                    .description(expenseType.getDescription())
+                                    .type(expenseType.getType())
+                                    .build()
+                    );
+                });
+
+                return new ExpensesTypeEnvelopeDTO(response);
+            }
+
+            log.info("[FIND ALL EXPENSES] Not found expenses");
+        } catch (Exception ex) {
+            log.error("[ERROR] Error to getting expenses {} ", ex.getMessage());
+            throw ex;
+        }
+
+        return null;
     }
 }
