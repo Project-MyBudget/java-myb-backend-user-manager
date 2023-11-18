@@ -1,15 +1,15 @@
 package br.com.mybudget.usermanager.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+import java.io.Serializable;
+
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ExpenseTypeResponseDTO {
+public class ExpenseTypeResponseDTO implements Serializable {
     private Long id;
     private String description;
     private String type;

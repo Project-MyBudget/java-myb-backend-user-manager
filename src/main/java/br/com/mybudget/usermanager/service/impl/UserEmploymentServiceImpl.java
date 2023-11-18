@@ -19,13 +19,6 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 	@Autowired
 	private UserEmploymentRepository userEmploymentRepository;
 
-	/**
-	 * 
-	 * returns the response if the user's employments data was registered
-	 * successfully
-	 * 
-	 * @return {@link ApiResponseDTO}
-	 */
 	@Override
 	public ApiResponseDTO addEmployment(UserEmploymentRequestDTO requestRegisterUserEmployment, UserEntity userEntity) {
 		try {
@@ -39,16 +32,11 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 			log.info("[REGISTER EMPLOYMENT] Register Employment.");
 			userEmploymentEntity = userEmploymentRepository.saveAndFlush(userEmploymentEntity);
 
-			if (userEmploymentEntity != null) {
-				log.info("[INFO] User Employment register Sucess - [ID EMPLOYMENT]: {}", userEmploymentEntity.getIdEmployment());
-				return new ApiResponseDTO(HttpStatus.CREATED.name(),
-						"Caracteristicas do emprego do usuario registrado com sucesso!");
-			}
-
-			log.error("[ERROR] Error in register user employment");
-
+			log.info("[INFO] User Employment register Success - [ID EMPLOYMENT]: {}", userEmploymentEntity.getIdEmployment());
+			return new ApiResponseDTO(HttpStatus.CREATED.name(),
+					"Caracteristicas do emprego do usuario registrado com sucesso!");
 		} catch (Exception ex) {
-			log.error("[ERROR] Error in register user employment - {}", ex);
+			log.error("[ERROR] Error in register user employment - {}", ex.getMessage());
 		}
 		return null;
 	}
