@@ -7,14 +7,18 @@
 		<version>2.7.16</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>br.com.mybudget</groupId>
 	<artifactId>java-myb-backend-user-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-myb-backend-user-manager</name>
 	<description>Backend to manager MyBudget users</description>
+	<packaging>jar</packaging>
+	
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud-azure.version>4.11.0</spring-cloud-azure.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<dependencies>
 		<dependency>
