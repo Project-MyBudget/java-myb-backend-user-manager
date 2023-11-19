@@ -25,7 +25,6 @@ public class ExpenseController {
 	 
 	@PostMapping(value = "/expenses/register", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> registerOrUpdateExpense(@RequestBody ExpenseEnvelopeDTO expenseEnvelopeDTO) {
-		
 		return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
 	}
 	
