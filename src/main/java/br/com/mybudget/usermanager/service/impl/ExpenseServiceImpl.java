@@ -3,9 +3,12 @@ package br.com.mybudget.usermanager.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.mybudget.usermanager.error.ExpenseSalaryException;
 import br.com.mybudget.usermanager.model.dto.*;
 import br.com.mybudget.usermanager.repository.ExpenseTypeRepository;
+import br.com.mybudget.usermanager.repository.UserEmploymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +18,8 @@ import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.ExpenseRepository;
 import br.com.mybudget.usermanager.service.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.transaction.Transactional;
 
 @Slf4j
 @Component
@@ -26,17 +31,26 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Autowired
     private ExpenseTypeRepository expenseTypeRepository;
 
+    @Autowired
+    private UserEmploymentRepository employmentRepository;
+
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public ResponseEntity<ApiResponseDTO> saveOrUpdateExpense(ExpenseEnvelopeDTO expenseEnvelopeDTO) {
 
+        ExpensesEntity expense;
         Long idUser = expenseEnvelopeDTO.getIdUser();
+
+        double totalExpenses = 0.0;
+        double salary = employmentRepository.findSalaryByUserId(expenseEnvelopeDTO.getIdUser());
 
         for (ExpenseDTO expenseDTO : expenseEnvelopeDTO.getExpenses()) {
             Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseDTO.getId());
 
-            ExpensesEntity expense = ExpensesEntity.builder().dateReference(expenseDTO.getDateReference())
+            expense = ExpensesEntity.builder().dateReference(expenseDTO.getDateReference())
                     .value(expenseDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
                     .expenseType(ExpensesTypeEntity.builder().id(expenseDTO.getId()).build()).build();
+            totalExpenses += expenseDTO.getValue();
 
             if (idExpense != null) {
                 expense.setId(idExpense);
@@ -44,6 +58,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 
             expenseRepository.saveAndFlush(expense);
             log.info("[SAVE EXPENSE] SAVING A NEW EXPENSE. ID_USER: {}  ", idUser);
+        }
+
+        if (salary <= totalExpenses) {
+            log.error("[ERROR] Error to update expenses, because salary is low in compare with total expenses. Executing rollback.");
+            throw new ExpenseSalaryException(HttpStatus.BAD_REQUEST, "Seu seu salário não pode ser menor que suas despesas!");
         }
 
         return ResponseEntity.ok(new ApiResponseDTO("200", "Despesas atualizadas com sucesso!"));

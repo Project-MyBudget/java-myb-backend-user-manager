@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ManyToAny;
 
@@ -39,6 +40,9 @@ public class ExpensesEntity {
 	
 	@Column(name = "VALUE", nullable = false)
 	private double value;
+
+	@Column(name = "STATUS", nullable = false)
+	private char status;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_USER", nullable = false)

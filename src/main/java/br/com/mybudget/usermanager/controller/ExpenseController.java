@@ -1,5 +1,6 @@
 package br.com.mybudget.usermanager.controller;
 
+import br.com.mybudget.usermanager.error.ExpenseSalaryException;
 import br.com.mybudget.usermanager.model.dto.ExpensesTypeEnvelopeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +26,11 @@ public class ExpenseController {
 	 
 	@PostMapping(value = "/expenses/register", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> registerOrUpdateExpense(@RequestBody ExpenseEnvelopeDTO expenseEnvelopeDTO) {
-		return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
+		try {
+			return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
+		} catch (ExpenseSalaryException ex) {
+			return ex.getResponseEntity();
+		}
 	}
 	
 	@GetMapping(value = "/expenses/{idUser}", produces = "application/json")
