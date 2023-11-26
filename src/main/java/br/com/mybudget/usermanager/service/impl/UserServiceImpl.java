@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
+import br.com.mybudget.usermanager.model.dto.UserBudgetEconomyRequestDTO;
 import br.com.mybudget.usermanager.model.dto.UserDTO;
 import br.com.mybudget.usermanager.model.dto.UserEmploymentRequestDTO;
 import br.com.mybudget.usermanager.model.entity.BudgetEntity;
@@ -117,5 +118,18 @@ public class UserServiceImpl implements UserService {
 				.password(userDto.getPassword())
 				.civilStatus(userDto.getCivilStatus().getMaritalStatus())
 				.build();
+	}
+
+	@Override
+	public ResponseEntity<ApiResponseDTO> updateBudgetAndEconomies(UserBudgetEconomyRequestDTO userBudgetEconomyRequestDTO) {
+		
+		int result = userRepository.updateBudgetAndSpendingLimitEconomyByIdUser(userBudgetEconomyRequestDTO.getIntendedBudget(), userBudgetEconomyRequestDTO.getUpdatedBudget(), userBudgetEconomyRequestDTO.getIdUser());
+		
+		if (result > 0) {
+			log.info("[INFO] Success on updating the current budget and spending limit economy.");
+			return ResponseEntity.ok(new ApiResponseDTO("200", "Sucesso ao atualizar o limite e orçamento."));
+		}
+		log.info("[ERROR] There was an error while updating.");
+		return ResponseEntity.badRequest().body(new ApiResponseDTO("400", "Erro ao tentar atualizar.")); 
 	}
 }
