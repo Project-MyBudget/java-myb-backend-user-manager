@@ -30,5 +30,4 @@ public class BudgetController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-
 }
