@@ -1,9 +1,8 @@
 package br.com.mybudget.usermanager.controller;
 
-import br.com.mybudget.usermanager.error.ExpenseSalaryException;
+import br.com.mybudget.usermanager.error.ApiResponseException;
 import br.com.mybudget.usermanager.model.dto.ExpensesTypeEnvelopeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,7 @@ public class ExpenseController {
 	public ResponseEntity<ApiResponseDTO> registerOrUpdateExpense(@RequestBody ExpenseEnvelopeDTO expenseEnvelopeDTO) {
 		try {
 			return expenseService.saveOrUpdateExpense(expenseEnvelopeDTO);
-		} catch (ExpenseSalaryException ex) {
+		} catch (ApiResponseException ex) {
 			return ex.getResponseEntity();
 		}
 	}

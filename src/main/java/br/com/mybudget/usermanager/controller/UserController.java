@@ -33,25 +33,12 @@ public class UserController {
 	
 	@Autowired
 	private AuthenticateUserService authenticateService;
-	
-	
-	/**
-	 * Register data user
-	 * 
-	 * @param requestRegisterUser
-	 * @return
-	 */
+
 	@PostMapping(value = "/user/register", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> register(@RequestBody UserDTO requestRegisterUser) {
 		return userService.addUser(requestRegisterUser);
 	}
-	
-	/**
-	 * Register data user employment
-	 * 
-	 * @param requestRegisterUser
-	 * @return
-	 */
+
 	@PostMapping(value = "/employment/register/{userId}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> addEmployment(
 			@RequestBody UserEmploymentRequestDTO requestRegisterUser, @PathVariable long userId) {
@@ -64,15 +51,7 @@ public class UserController {
 		return ResponseEntity.badRequest().body(
 				new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar os dados do emprego"));
 	}
-	
-	
-	/**
-	 * Tries to retrive a user from the database's application.
-	 * 
-	 * @author Marcos Vinicius
-	 * @param PathVariable long id
-	 * @return ResponseEntity<UserEntity>
-	 */
+
 	@GetMapping(value = "/user/id/{id}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<UserEntity> getUserById(@PathVariable long id) {
 		UserEntity response = userService.findByIdUser(id);

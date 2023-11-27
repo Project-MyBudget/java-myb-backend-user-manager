@@ -3,7 +3,7 @@ package br.com.mybudget.usermanager.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.mybudget.usermanager.error.ExpenseSalaryException;
+import br.com.mybudget.usermanager.error.ApiResponseException;
 import br.com.mybudget.usermanager.model.dto.*;
 import br.com.mybudget.usermanager.repository.ExpenseTypeRepository;
 import br.com.mybudget.usermanager.repository.UserEmploymentRepository;
@@ -62,7 +62,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         if (salary <= totalExpenses) {
             log.error("[ERROR] Error to update expenses, because salary is low in compare with total expenses. Executing rollback.");
-            throw new ExpenseSalaryException(HttpStatus.BAD_REQUEST, "Seu seu salário não pode ser menor que suas despesas!");
+            throw new ApiResponseException(HttpStatus.BAD_REQUEST, "Seu seu salário não pode ser menor que suas despesas!");
         }
 
         return ResponseEntity.ok(new ApiResponseDTO("200", "Despesas atualizadas com sucesso!"));
