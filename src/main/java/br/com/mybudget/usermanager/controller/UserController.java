@@ -70,7 +70,6 @@ public class UserController {
 	
 	@PutMapping(value = "/user/economies", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> updateBudgetEconomies(@RequestBody UserBudgetEconomyRequestDTO request) {
-		
 		return userService.updateBudgetAndEconomies(request);
 	}
 }

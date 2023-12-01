@@ -122,8 +122,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<ApiResponseDTO> updateBudgetAndEconomies(UserBudgetEconomyRequestDTO userBudgetEconomyRequestDTO) {
-		
-		int result = userRepository.updateBudgetAndSpendingLimitEconomyByIdUser(userBudgetEconomyRequestDTO.getIntendedBudget(), userBudgetEconomyRequestDTO.getUpdatedBudget(), userBudgetEconomyRequestDTO.getIdUser());
+		int result = userRepository
+				.updateBudgetAndSpendingLimitEconomyByIdUser(userBudgetEconomyRequestDTO.getSpendingLimitEconomy(), userBudgetEconomyRequestDTO.getBudget(), userBudgetEconomyRequestDTO.getIdUser());
 		
 		if (result > 0) {
 			log.info("[INFO] Success on updating the current budget and spending limit economy.");
