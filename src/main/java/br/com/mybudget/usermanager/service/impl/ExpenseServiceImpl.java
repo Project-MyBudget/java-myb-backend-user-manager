@@ -49,7 +49,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
             expense = ExpensesEntity.builder().dateReference(expenseDTO.getDateReference())
                     .value(expenseDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
-                    .expenseType(ExpensesTypeEntity.builder().id(expenseDTO.getId()).build()).build();
+                    .expenseType(ExpensesTypeEntity.builder().id(expenseDTO.getId()).build()).status("A").build();
             totalExpenses += expenseDTO.getValue();
 
             if (idExpense != null) {

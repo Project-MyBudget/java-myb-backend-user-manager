@@ -41,8 +41,8 @@ public class ExpensesEntity {
 	@Column(name = "VALUE", nullable = false)
 	private double value;
 
-	@Column(name = "STATUS", nullable = false)
-	private char status;
+	@Column(name = "STATUS", nullable = false, columnDefinition = "DEFAULT 'A'")
+	private String status;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_USER", nullable = false)

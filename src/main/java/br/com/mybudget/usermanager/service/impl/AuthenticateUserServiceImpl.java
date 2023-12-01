@@ -38,7 +38,7 @@ public class AuthenticateUserServiceImpl implements AuthenticateUserService {
 
 			boolean isValidaPwd = cryptoDataService.decryptData(userEntity.getPassword()).get(0) != null;
 
-			if (isValidaPwd) {
+			if (!isValidaPwd) {
 				log.info("[ERROR] Password not valid.");
 				return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(
 						new ApiResponseDTO(HttpStatus.PRECONDITION_FAILED.name(), "Senha incorreta, tente novamente!"));
