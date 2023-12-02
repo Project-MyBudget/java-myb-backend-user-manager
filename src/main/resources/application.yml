@@ -1,9 +1,9 @@
 spring: 
   datasource: 
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:jdbc:mysql://mybdb.cddkgvwhc4hh.us-east-1.rds.amazonaws.com/mybdb}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
+    username: ${DATABASE_USER:admin}
+    password: ${DATABASE_PASSWORD:F1Avin_duPn3u}
   jpa: 
     hibernate: 
       ddl-auto: update
@@ -16,8 +16,8 @@ spring:
         
 
 cipher:
-  key: ${CIPHER_KEY}
-  type: ${CIPHER_TYPE_INSTANCE}
+  key: ${CIPHER_KEY:Bar12345Bar12345}
+  type: ${CIPHER_TYPE_INSTANCE:AES/ECB/PKCS5PADDING}
 
 server:
   port: 8081
