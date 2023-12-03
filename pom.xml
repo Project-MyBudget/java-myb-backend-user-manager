@@ -10,7 +10,7 @@
 	
 	<groupId>br.com.mybudget</groupId>
 	<artifactId>java-myb-backend-user-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>java-myb-backend-user-manager</name>
 	<description>Backend to manager MyBudget users</description>
 	<packaging>jar</packaging>

@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
 					BudgetEntity budgetEntity = BudgetEntity
 							.builder()
-							.budget(employmentDTO.getSalary())
+							.budget(0)
 							.user(userEntity)
 							.valueSaved(0)
 							.spendingLimitEconomy(0)

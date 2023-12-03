@@ -40,7 +40,7 @@ public class BudgetServiceImpl implements BudgetService {
             boolean isVerified = this.verifySpendingLimit(request.getIdUser(), request.getSalary(), request.getSpendingLimitEconomy());
             if (!isVerified) {
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
-                        .body(new ApiResponseDTO(HttpStatus.PRECONDITION_FAILED.toString(), "Nós não indicamos ter uma econômia comprometendo mais que o limite estabelecido para sua renda!"));
+                        .body(new ApiResponseDTO(HttpStatus.PRECONDITION_FAILED.toString(), "Nós não indicamos ter uma econômia comprometendo mais de 30% de sua renda!"));
             }
 
             BudgetEntity budgetEntity = BudgetEntity
