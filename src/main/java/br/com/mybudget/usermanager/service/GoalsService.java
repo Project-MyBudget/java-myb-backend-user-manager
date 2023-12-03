@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service;
 public interface GoalsService {
     void createGoals(GoalsEnvelopeDTO request);
     void deleteGoal(Long goalId);
+    void updateGoals(GoalDTO request);
     GoalsEnvelopeDTO findAllGoals(Long userId);
 }

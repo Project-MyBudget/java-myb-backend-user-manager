@@ -47,7 +47,7 @@ public class UserEntity {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = "STATUS", nullable = false, columnDefinition = "DEFAULT 'A'")
     private char status;
 
     @Column(name = "PASSWORD", nullable = false)

@@ -27,6 +27,16 @@ public class GoalsController {
         }
     }
 
+    @PutMapping(value = "/goals/save")
+    public ResponseEntity<ApiResponseDTO> update(@RequestBody GoalDTO request) {
+        try {
+            goalsService.updateGoals(request);
+            return ResponseEntity.ok(new ApiResponseDTO(HttpStatus.CREATED.toString(), "Meta alterada com sucesso."));
+        } catch (ApiResponseException ex) {
+            return ex.getResponseEntity();
+        }
+    }
+
     @DeleteMapping(value = "/goals/delete/{goalId}")
     public ResponseEntity<ApiResponseDTO> deleteGoal(@PathVariable Long goalId) {
         try {

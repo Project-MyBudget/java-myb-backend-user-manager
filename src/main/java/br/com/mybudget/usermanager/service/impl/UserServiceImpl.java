@@ -82,7 +82,8 @@ public class UserServiceImpl implements UserService {
 					"Não foi possivel registrar o usuario"));
 
 		} catch (Exception ex) {
-			log.error("[ERROR] Error in register user - {}", ex);
+			log.error("[ERROR] Error in register user - {}", ex.getMessage());
+			log.error(ex.getMessage(), ex);
 			return ResponseEntity.badRequest()
 					.body(new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar o usuario"));
 		}
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
 				.childrenNumber(userDto.getChildrenNumber())
 				.phoneNumber(userDto.getPhoneNumber())
 				.email(userDto.getEmail())
-				.status(userDto.getStatus())
+				.status('A')
 				.password(userDto.getPassword())
 				.civilStatus(userDto.getCivilStatus().getMaritalStatus())
 				.build();

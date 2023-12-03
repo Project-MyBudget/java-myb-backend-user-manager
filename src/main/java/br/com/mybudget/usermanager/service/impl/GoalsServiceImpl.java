@@ -48,6 +48,26 @@ public class GoalsServiceImpl implements GoalsService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
+    public void updateGoals(GoalDTO request) {
+        try {
+            log.info("[GOAL] Creating goal {} ", request.getDescription());
+            GoalEntity goalEntity = GoalEntity.builder()
+                    .idGoal(request.getGoalId())
+                    .progress(request.getProgress())
+                    .description(request.getDescription())
+                    .estimatedDate(request.getEstimatedDate())
+                    .user(UserEntity.builder().idUser(request.getUserId()).build())
+                    .build();
+            repository.saveAndFlush(goalEntity);
+        } catch (Exception ex) {
+            log.error("[ERROR] Error to update new goals to user. More details: {} ",  ex.getMessage());
+            log.error(ex.getMessage(), ex);
+            throw new ApiResponseException(HttpStatus.BAD_REQUEST, "Erro ao alterar meta.");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
     public void deleteGoal(Long goalId) {
         try {
             log.info("[GOAL] Deleting goal {} ", goalId);
