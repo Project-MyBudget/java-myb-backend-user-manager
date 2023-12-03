@@ -2,6 +2,7 @@ package br.com.mybudget.usermanager.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.com.mybudget.usermanager.error.ApiResponseException;
 import br.com.mybudget.usermanager.model.dto.*;
@@ -45,19 +46,27 @@ public class ExpenseServiceImpl implements ExpenseService {
         double salary = employmentRepository.findSalaryByUserId(expenseEnvelopeDTO.getIdUser());
 
         for (ExpenseDTO expenseDTO : expenseEnvelopeDTO.getExpenses()) {
-            Long idExpense = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseDTO.getId());
+            Long expenseId = 0L;
+            double expenseValue = 0;
+            List<Object[]> userExpenses = expenseRepository.findIdExpenseByIdUserAndIdExpenseType(idUser, expenseDTO.getId());
+
+            for (Object[] userExpense : userExpenses) {
+                expenseId = Long.valueOf((Integer) userExpense[0]);
+                expenseValue = (Double) userExpense[1];
+            }
 
             expense = ExpensesEntity.builder().dateReference(expenseDTO.getDateReference())
-                    .value(expenseDTO.getValue()).userEntity(UserEntity.builder().idUser(idUser).build())
+                    .value(expenseDTO.getValue() + expenseValue).userEntity(UserEntity.builder().idUser(idUser).build())
                     .expenseType(ExpensesTypeEntity.builder().id(expenseDTO.getId()).build()).status("A").build();
-            totalExpenses += expenseDTO.getValue();
+            totalExpenses += expenseDTO.getValue() + expenseValue;
 
-            if (idExpense != null) {
-                expense.setId(idExpense);
+            if (expenseId != null) {
+                expense.setId(expenseId);
             }
 
             expenseRepository.saveAndFlush(expense);
             log.info("[SAVE EXPENSE] SAVING A NEW EXPENSE. ID_USER: {}  ", idUser);
+
         }
 
         if (salary <= totalExpenses) {
@@ -105,6 +114,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         try {
             log.info("[FIND ALL EXPENSES] Finding all expenses types");
             List<ExpensesTypeEntity> expensesTypesEntities = expenseTypeRepository.findAll();
+
             if (!expensesTypesEntities.isEmpty()) {
                 List<ExpenseTypeResponseDTO> response = new ArrayList<>();
                 expensesTypesEntities.forEach(expenseType -> {
