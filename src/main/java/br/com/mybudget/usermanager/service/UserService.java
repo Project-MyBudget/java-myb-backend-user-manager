@@ -11,6 +11,7 @@ import br.com.mybudget.usermanager.model.entity.UserEntity;
 @Service
 public interface UserService {
 	ResponseEntity<ApiResponseDTO> addUser(UserDTO requestRegisterUser);
+	ResponseEntity<ApiResponseDTO> updateUser(UserDTO request);
 	UserEntity findByIdUser(long id);
 	ResponseEntity<ApiResponseDTO> updateBudgetAndEconomies(UserBudgetEconomyRequestDTO userBudgetEconomyRequestDTO);
 }

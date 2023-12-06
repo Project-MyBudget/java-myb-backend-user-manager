@@ -39,11 +39,16 @@ public class UserController {
 		return userService.addUser(requestRegisterUser);
 	}
 
+	@PutMapping(value = "/user/update", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<ApiResponseDTO> updateUser(@RequestBody UserDTO requestRegisterUser) {
+		return userService.updateUser(requestRegisterUser);
+	}
+
 	@PostMapping(value = "/employment/register/{userId}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ApiResponseDTO> addEmployment(
 			@RequestBody UserEmploymentRequestDTO requestRegisterUser, @PathVariable long userId) {
 
-		ApiResponseDTO response = userEmploymentService.addEmployment(requestRegisterUser,	userService.findByIdUser(userId));
+		ApiResponseDTO response = userEmploymentService.addEmployment(requestRegisterUser,	userService.findByIdUser(userId), false);
 
 		if (response != null) {
 			return ResponseEntity.ok(response);
@@ -52,7 +57,7 @@ public class UserController {
 				new ApiResponseDTO(HttpStatus.BAD_REQUEST.name(), "Não foi possivel registrar os dados do emprego"));
 	}
 
-	@GetMapping(value = "/user/id/{id}", consumes = "application/json", produces = "application/json")
+	@GetMapping(value = "/user/id/{id}", produces = "application/json")
 	public ResponseEntity<UserEntity> getUserById(@PathVariable long id) {
 		UserEntity response = userService.findByIdUser(id);
 		
@@ -61,6 +66,12 @@ public class UserController {
 		}
 
 		return ResponseEntity.notFound().build();
+	}
+
+	@GetMapping(value = "/user/employment/{id}", produces = "application/json")
+	public ResponseEntity<UserEmploymentRequestDTO> findEmploymentByUserId(@PathVariable Long id) {
+		var response = userEmploymentService.findEmploymentByUser(id);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping(value = "/user/authenticate", consumes = "application/json", produces = "application/json")

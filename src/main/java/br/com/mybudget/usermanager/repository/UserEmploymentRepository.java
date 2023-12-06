@@ -12,4 +12,6 @@ public interface UserEmploymentRepository extends JpaRepository<UserEmploymentEn
     @Query(value = "SELECT emp.SALARY FROM TB_EMPLOYMENTS emp WHERE emp.ID_USER = ?1", nativeQuery = true)
     double findSalaryByUserId(Long userId);
 
+    @Query(value = "SELECT * FROM TB_EMPLOYMENTS WHERE ID_USER = ?1", nativeQuery = true)
+    UserEmploymentEntity findEmploymentByUserId(Long userId);
 }

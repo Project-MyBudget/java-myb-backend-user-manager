@@ -20,17 +20,22 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 	private UserEmploymentRepository userEmploymentRepository;
 
 	@Override
-	public ApiResponseDTO addEmployment(UserEmploymentRequestDTO requestRegisterUserEmployment, UserEntity userEntity) {
+	public ApiResponseDTO addEmployment(UserEmploymentRequestDTO request, UserEntity userEntity, boolean isUpdate) {
 		try {
 			UserEmploymentEntity userEmploymentEntity = UserEmploymentEntity.builder()
 					.user(userEntity)
-					.jobName(requestRegisterUserEmployment.getJobName())
-					.salary(requestRegisterUserEmployment.getSalary())
-					.workStartDate(requestRegisterUserEmployment.getWorkStartDate())
+					.jobName(request.getJobName())
+					.salary(request.getSalary())
+					.workStartDate(request.getWorkStartDate())
 					.build();
 
+			if (isUpdate) {
+				log.info("[UPDATE USER] Updating user in employment...");
+				userEmploymentEntity.setIdEmployment(request.getIdEmployment());
+			}
+
 			log.info("[REGISTER EMPLOYMENT] Register Employment.");
-			userEmploymentEntity = userEmploymentRepository.saveAndFlush(userEmploymentEntity);
+			userEmploymentEntity = userEmploymentRepository.save(userEmploymentEntity);
 
 			log.info("[INFO] User Employment register Success - [ID EMPLOYMENT]: {}", userEmploymentEntity.getIdEmployment());
 			return new ApiResponseDTO(HttpStatus.CREATED.name(),
@@ -38,6 +43,24 @@ public class UserEmploymentServiceImpl implements UserEmploymentService {
 		} catch (Exception ex) {
 			log.error("[ERROR] Error in register user employment - {}", ex.getMessage());
 		}
+		return null;
+	}
+
+	@Override
+	public UserEmploymentRequestDTO findEmploymentByUser(Long userId) {
+		try {
+			UserEmploymentEntity employment = userEmploymentRepository.findEmploymentByUserId(userId);
+			return UserEmploymentRequestDTO.builder()
+					.jobName(employment.getJobName())
+					.salary(employment.getSalary())
+					.workStartDate(employment.getWorkStartDate())
+					.idEmployment(employment.getIdEmployment())
+					.build();
+		} catch (Exception ex) {
+			log.error("[ERROR] Error to getting employmento to user: {} ", ex.getMessage());
+			log.error(ex.getMessage(), ex);
+		}
+
 		return null;
 	}
 }

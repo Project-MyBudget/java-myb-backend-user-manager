@@ -38,7 +38,7 @@ public class UserEmploymentEntity {
 	private double salary;
 	
 	@Column(name = "WORK_START_DATE", nullable = false, columnDefinition = "DATE NOT NULL")
-	private Date workStartDate;
+	private String workStartDate;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")

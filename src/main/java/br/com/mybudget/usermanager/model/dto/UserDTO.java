@@ -26,6 +26,7 @@ public class UserDTO {
 	private String email;
 	private char status;
 	private String password;
+	private boolean isUpdatePassword;
 	private UserMaritalStatusEnum civilStatus;
 	private UserEmploymentRequestDTO employment;
 }

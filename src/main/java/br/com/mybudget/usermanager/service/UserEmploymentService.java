@@ -8,5 +8,6 @@ import br.com.mybudget.usermanager.model.entity.UserEntity;
 
 @Service
 public interface UserEmploymentService {
-	ApiResponseDTO addEmployment(UserEmploymentRequestDTO requestRegisterUserEmployment, UserEntity userEntity);
+	ApiResponseDTO addEmployment(UserEmploymentRequestDTO requestRegisterUserEmployment, UserEntity userEntity, boolean isUpdate);
+	UserEmploymentRequestDTO findEmploymentByUser(Long userId);
 }

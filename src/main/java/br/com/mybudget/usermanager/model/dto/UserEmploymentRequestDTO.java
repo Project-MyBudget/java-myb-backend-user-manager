@@ -17,5 +17,5 @@ public class UserEmploymentRequestDTO {
 	private double salary;
 	private String jobName;
 	private UserDTO user;
-	private Date workStartDate;
+	private String workStartDate;
 }
