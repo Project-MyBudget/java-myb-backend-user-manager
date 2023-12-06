@@ -38,10 +38,6 @@ public class BudgetServiceImpl implements BudgetService {
         try {
             log.info("[BUDGET] Saving changes for budget: {} ", request.getIdBudget());
             boolean isVerified = this.verifySpendingLimit(request.getIdUser(), request.getSalary(), request.getSpendingLimitEconomy());
-            if (!isVerified) {
-                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
-                        .body(new ApiResponseDTO(HttpStatus.PRECONDITION_FAILED.toString(), "Nós não indicamos ter uma econômia comprometendo mais de 30% de sua renda!"));
-            }
 
             BudgetEntity budgetEntity = BudgetEntity
                     .builder()
@@ -52,6 +48,12 @@ public class BudgetServiceImpl implements BudgetService {
                     .budget(request.getBudget())
                     .build();
             budgetRepository.saveAndFlush(budgetEntity);
+
+            if (!isVerified) {
+                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
+                        .body(new ApiResponseDTO(HttpStatus.PRECONDITION_FAILED.toString(), "Nós não indicamos ter uma econômia comprometendo mais de 30% de sua renda!"));
+            }
+
             return ResponseEntity.ok(new ApiResponseDTO(HttpStatus.OK.toString(), "Atualização realizada com suceso!"));
         } catch (Exception ex) {
             log.error("[BUDGET ERROR] Error to save new changes in Budget - ID BUDGET: {} ", request.getIdBudget());
