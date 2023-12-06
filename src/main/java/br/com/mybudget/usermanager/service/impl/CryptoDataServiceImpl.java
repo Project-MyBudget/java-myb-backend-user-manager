@@ -1,8 +1,5 @@
 package br.com.mybudget.usermanager.service.impl;
 
-import org.springframework.stereotype.Component;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -13,11 +10,12 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
 import br.com.mybudget.usermanager.enums.CipherEnum;
 import br.com.mybudget.usermanager.service.CipherService;
 import br.com.mybudget.usermanager.service.CryptoDataService;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component

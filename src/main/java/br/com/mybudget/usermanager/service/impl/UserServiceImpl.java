@@ -106,6 +106,20 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public ResponseEntity<ApiResponseDTO> updateBudgetAndEconomies(UserBudgetEconomyRequestDTO userBudgetEconomyRequestDTO) {
+		int result = userRepository
+				.updateBudgetAndSpendingLimitEconomyByIdUser(userBudgetEconomyRequestDTO.getSpendingLimitEconomy(), userBudgetEconomyRequestDTO.getBudget(), userBudgetEconomyRequestDTO.getIdUser());
+		
+		if (result > 0) {
+			log.info("[INFO] Success on updating the current budget and spending limit economy.");
+			return ResponseEntity.ok(new ApiResponseDTO("200", "Sucesso ao atualizar o limite e orçamento."));
+		}
+		log.info("[ERROR] There was an error while updating.");
+		return ResponseEntity.badRequest().body(new ApiResponseDTO("400", "Erro ao tentar atualizar.")); 
+	}
+	
+	
 	private static UserEntity convertToEntity(UserDTO userDto) {
 		return UserEntity.builder()
 				.firstName(userDto.getFirstName())
@@ -119,18 +133,5 @@ public class UserServiceImpl implements UserService {
 				.password(userDto.getPassword())
 				.civilStatus(userDto.getCivilStatus().getMaritalStatus())
 				.build();
-	}
-
-	@Override
-	public ResponseEntity<ApiResponseDTO> updateBudgetAndEconomies(UserBudgetEconomyRequestDTO userBudgetEconomyRequestDTO) {
-		int result = userRepository
-				.updateBudgetAndSpendingLimitEconomyByIdUser(userBudgetEconomyRequestDTO.getSpendingLimitEconomy(), userBudgetEconomyRequestDTO.getBudget(), userBudgetEconomyRequestDTO.getIdUser());
-		
-		if (result > 0) {
-			log.info("[INFO] Success on updating the current budget and spending limit economy.");
-			return ResponseEntity.ok(new ApiResponseDTO("200", "Sucesso ao atualizar o limite e orçamento."));
-		}
-		log.info("[ERROR] There was an error while updating.");
-		return ResponseEntity.badRequest().body(new ApiResponseDTO("400", "Erro ao tentar atualizar.")); 
 	}
 }

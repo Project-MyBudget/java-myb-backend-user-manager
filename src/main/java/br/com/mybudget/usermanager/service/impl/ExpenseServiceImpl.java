@@ -2,25 +2,30 @@ package br.com.mybudget.usermanager.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import br.com.mybudget.usermanager.error.ApiResponseException;
-import br.com.mybudget.usermanager.model.dto.*;
-import br.com.mybudget.usermanager.repository.ExpenseTypeRepository;
-import br.com.mybudget.usermanager.repository.UserEmploymentRepository;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import br.com.mybudget.usermanager.error.ApiResponseException;
+import br.com.mybudget.usermanager.model.dto.ApiResponseDTO;
+import br.com.mybudget.usermanager.model.dto.ExpenseDTO;
+import br.com.mybudget.usermanager.model.dto.ExpenseEnvelopeDTO;
+import br.com.mybudget.usermanager.model.dto.ExpenseTypeResponseDTO;
+import br.com.mybudget.usermanager.model.dto.ExpensesTypeEnvelopeDTO;
+import br.com.mybudget.usermanager.model.dto.FullExpenseDTO;
+import br.com.mybudget.usermanager.model.dto.UserExpensesEnvelopeResponseDTO;
 import br.com.mybudget.usermanager.model.entity.ExpensesEntity;
 import br.com.mybudget.usermanager.model.entity.ExpensesTypeEntity;
 import br.com.mybudget.usermanager.model.entity.UserEntity;
 import br.com.mybudget.usermanager.repository.ExpenseRepository;
+import br.com.mybudget.usermanager.repository.ExpenseTypeRepository;
+import br.com.mybudget.usermanager.repository.UserEmploymentRepository;
 import br.com.mybudget.usermanager.service.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.transaction.Transactional;
 
 @Slf4j
 @Component
